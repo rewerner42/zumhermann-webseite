@@ -1,0 +1,36 @@
+name: Release-Artefakt mit Veröffentlichungssperre
+
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  gated-release-build:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+
+    steps:
+      - name: Repository auschecken
+        uses: actions/checkout@v7
+
+      - name: Node.js einrichten
+        uses: actions/setup-node@v7
+        with:
+          node-version-file: .nvmrc
+          cache: npm
+
+      - name: Abhängigkeiten installieren
+        run: npm ci
+
+      - name: Veröffentlichungsvoraussetzungen und Website prüfen
+        run: npm run release:build
+
+      - name: Geprüftes statisches Artefakt bereitstellen
+        uses: actions/upload-artifact@v7
+        with:
+          name: zumhermann-web-dist
+          path: dist/
+          if-no-files-found: error
+          retention-days: 14
