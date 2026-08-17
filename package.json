@@ -1,0 +1,29 @@
+{
+  "name": "zumhermann-web",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "engines": {
+    "node": ">=22.12.0",
+    "npm": ">=10"
+  },
+  "scripts": {
+    "dev": "astro dev",
+    "start": "astro dev",
+    "check:astro": "astro check",
+    "test:content": "node scripts/content-check.mjs",
+    "check": "npm run check:astro && npm run test:content",
+    "build": "astro build",
+    "postbuild": "node scripts/dist-check.mjs",
+    "preview": "astro preview",
+    "legal:check": "node scripts/legal-check.mjs",
+    "release:build": "npm run legal:check && npm run check && npm run build"
+  },
+  "dependencies": {
+    "astro": "7.2.2"
+  },
+  "devDependencies": {
+    "@astrojs/check": "0.9.10",
+    "typescript": "6.0.3"
+  }
+}
