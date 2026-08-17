@@ -1,0 +1,34 @@
+---
+import { isConfiguredUrl, site } from '../config/site';
+
+const stores = [
+  {
+    name: 'Apple App Store',
+    shortName: 'App Store',
+    url: site.stores.apple,
+  },
+  {
+    name: 'Google Play',
+    shortName: 'Google Play',
+    url: site.stores.google,
+  },
+];
+---
+
+<div class="store-group" aria-label="App-Verfügbarkeit">
+  {
+    stores.map((store) =>
+      isConfiguredUrl(store.url) ? (
+        <a class="store-button" href={store.url} rel="external">
+          <span>Jetzt laden im</span>
+          <strong>{store.shortName}</strong>
+        </a>
+      ) : (
+        <span class="store-button store-button--disabled" aria-label={`${store.name}: demnächst erhältlich`}>
+          <span>Demnächst erhältlich</span>
+          <strong>{store.shortName}</strong>
+        </span>
+      ),
+    )
+  }
+</div>

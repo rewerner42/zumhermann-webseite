@@ -1,0 +1,124 @@
+---
+import LegalDraftNotice from '../components/LegalDraftNotice.astro';
+import { hasPlaceholder, site } from '../config/site';
+import BaseLayout from '../layouts/BaseLayout.astro';
+
+const emailReady = !hasPlaceholder(site.owner.email);
+---
+
+<BaseLayout
+  title="Support"
+  description="Hilfe und Kontakt für die App zumHermann: Standortfreigabe, Kompass, Teilen und Datenschutz."
+>
+  <section class="page-hero page-hero--support">
+    <div class="shell page-hero-inner">
+      <p class="eyebrow">Hilfe aus dem Teuto</p>
+      <h1>Support</h1>
+      <p>
+        Wenn Hermann verschwunden scheint, liegt es meist am Standortzugriff oder am Kompass. Hier
+        findest du die wichtigsten Lösungen und den direkten Kontakt.
+      </p>
+    </div>
+  </section>
+
+  <section class="legal-page section">
+    <div class="shell legal-layout">
+      <aside class="legal-toc" aria-label="Inhalt dieser Seite">
+        <p class="legal-toc-title">Direkt zu</p>
+        <ul>
+          <li><a href="#kontakt">Kontakt</a></li>
+          <li><a href="#standort">Standort</a></li>
+          <li><a href="#kompass">Kompass</a></li>
+          <li><a href="#teilen">Teilen</a></li>
+          <li><a href="#daten">Daten löschen</a></li>
+        </ul>
+      </aside>
+
+      <div class="legal-content">
+        {!emailReady && <LegalDraftNotice compact />}
+
+        <section id="kontakt">
+          <h2>Kontakt</h2>
+          <p>
+            Verantwortlicher Support: <strong>{site.owner.name}</strong>
+          </p>
+          <dl class="contact-list">
+            <div>
+              <dt>E-Mail</dt>
+              <dd>
+                {
+                  emailReady ? (
+                    <a href={`mailto:${site.owner.email}`}>{site.owner.email}</a>
+                  ) : (
+                    <span class="placeholder">{site.owner.email}</span>
+                  )
+                }
+              </dd>
+            </div>
+            <div>
+              <dt>Weitere schnelle Kontaktmöglichkeit</dt>
+              <dd class:list={{ placeholder: hasPlaceholder(site.owner.additionalContact) }}>
+                {site.owner.additionalContact}
+              </dd>
+            </div>
+          </dl>
+          <p>
+            Bitte nenne bei einer Anfrage die App-Version, dein Betriebssystem und beschreibe, an
+            welchem Schritt das Problem auftritt. Sende keine sensiblen Gesundheitsdaten und keine
+            genaue Standortposition mit.
+          </p>
+        </section>
+
+        <section id="standort">
+          <h2>Standort wird nicht gefunden</h2>
+          <ol>
+            <li>Prüfe in den Geräteeinstellungen, ob Standortdienste eingeschaltet sind.</li>
+            <li>Erlaube zumHermann den Standortzugriff während der Nutzung.</li>
+            <li>Gehe möglichst nach draußen oder ans Fenster und versuche es erneut.</li>
+          </ol>
+          <p>
+            Die App fordert keine Hintergrundortung an. Die Berechtigung kannst du jederzeit in den
+            Systemeinstellungen widerrufen.
+          </p>
+        </section>
+
+        <section id="kompass">
+          <h2>Die Richtung springt oder wirkt falsch</h2>
+          <ol>
+            <li>Halte das Smartphone möglichst flach und fern von Magneten oder Metallflächen.</li>
+            <li>Bewege das Gerät einige Male langsam in Form einer Acht, um den Kompass zu kalibrieren.</li>
+            <li>Drehe dich langsam; schnelle Bewegungen können die Anzeige unruhig machen.</li>
+          </ol>
+          <p>
+            Manche Geräte liefern keine ausreichend verlässliche Kompassrichtung. Die App weist dann
+            darauf hin, statt eine Richtung zu erfinden.
+          </p>
+        </section>
+
+        <section id="teilen">
+          <h2>Ergebnisgrafik teilen</h2>
+          <p>
+            Nach erfolgreicher Ausrichtung erzeugt die App lokal eine temporäre PNG-Grafik. Beim
+            Antippen von „Ergebnis teilen“ öffnet sich das Teilen-Menü deines Betriebssystems. Du
+            entscheidest selbst, welche Ziel-App oder welcher Empfänger die Grafik erhält.
+          </p>
+          <p>
+            Die Grafik enthält Entfernung und Richtungsgenauigkeit, aber keine genaue Position,
+            Koordinaten, Ortsangabe oder Zeitstempel.
+          </p>
+        </section>
+
+        <section id="daten">
+          <h2>Berechtigungen und lokale Daten entfernen</h2>
+          <p>
+            Berechtigungen lassen sich in den Geräteeinstellungen widerrufen. Den lokal gespeicherten
+            Einführungsstatus und temporäre App-Dateien kannst du durch Zurücksetzen der App-Daten
+            (sofern dein Betriebssystem diese Funktion anbietet) oder durch Deinstallieren entfernen.
+            Plattform-Backups können je nach Geräteeinstellung unabhängig davon bestehen.
+          </p>
+          <p>Weitere Einzelheiten stehen in der <a href="/datenschutz">Datenschutzerklärung</a>.</p>
+        </section>
+      </div>
+    </div>
+  </section>
+</BaseLayout>

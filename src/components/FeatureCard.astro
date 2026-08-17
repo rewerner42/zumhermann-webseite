@@ -1,0 +1,15 @@
+---
+interface Props {
+  marker: string;
+  title: string;
+  text: string;
+}
+
+const { marker, title, text } = Astro.props;
+---
+
+<article class="feature-card">
+  <span class="feature-marker" aria-hidden="true">{marker}</span>
+  <h3>{title}</h3>
+  <p>{text}</p>
+</article>

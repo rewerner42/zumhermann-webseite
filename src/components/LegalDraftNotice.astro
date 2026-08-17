@@ -1,0 +1,15 @@
+---
+interface Props {
+  compact?: boolean;
+}
+
+const { compact = false } = Astro.props;
+---
+
+<aside class:list={['draft-notice', compact && 'draft-notice--compact']} aria-label="Hinweis zum Entwurfsstatus">
+  <p><strong>Rechtlicher Entwurf – nicht veröffentlicht.</strong></p>
+  <p>
+    Pflichtangaben sind noch als deutlich erkennbare Platzhalter enthalten. Dieser Text ist technisch
+    vorbereitet, ersetzt aber keine individuelle Rechtsberatung oder rechtliche Freigabe.
+  </p>
+</aside>

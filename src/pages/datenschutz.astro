@@ -1,0 +1,285 @@
+---
+import LegalDraftNotice from '../components/LegalDraftNotice.astro';
+import { hasPlaceholder, site } from '../config/site';
+import BaseLayout from '../layouts/BaseLayout.astro';
+
+const emailReady = !hasPlaceholder(site.owner.email);
+---
+
+<BaseLayout
+  title="Datenschutz"
+  description="Datenschutzerklärung für die Website und mobile App zumHermann."
+  noindex={!site.release.publicReleaseApproved}
+>
+  <section class="page-hero">
+    <div class="shell page-hero-inner">
+      <p class="eyebrow">Ohne Nebelkerzen</p>
+      <h1>Datenschutz</h1>
+      <p>
+        Was die Website und die mobile App verarbeiten – und, ebenso wichtig, was nicht bei Werner
+        Francis Reineke ankommt.
+      </p>
+    </div>
+  </section>
+
+  <article class="legal-page section">
+    <div class="shell legal-layout">
+      <aside class="legal-toc" aria-label="Inhalt der Datenschutzerklärung">
+        <p class="legal-toc-title">Direkt zu</p>
+        <ul>
+          <li><a href="#verantwortlicher">Verantwortlicher</a></li>
+          <li><a href="#website">Website</a></li>
+          <li><a href="#supportanfragen">Supportanfragen</a></li>
+          <li><a href="#store-links">Store-Links</a></li>
+          <li><a href="#app">Mobile App</a></li>
+          <li><a href="#rechte">Deine Rechte</a></li>
+        </ul>
+      </aside>
+
+      <div class="legal-content">
+        <LegalDraftNotice />
+
+        <section id="verantwortlicher">
+          <h2>1. Verantwortlicher</h2>
+          <p>
+            <strong>{site.owner.name}</strong><br />
+            <span class:list={{ placeholder: hasPlaceholder(site.owner.street) }}>{site.owner.street}</span
+            ><br />
+            <span class:list={{ placeholder: hasPlaceholder(site.owner.postalCity) }}
+              >{site.owner.postalCity}</span
+            >
+          </p>
+          <p>
+            E-Mail: {
+              emailReady ? (
+                <a href={`mailto:${site.owner.email}`}>{site.owner.email}</a>
+              ) : (
+                <span class="placeholder">{site.owner.email}</span>
+              )
+            }<br />
+            Weitere Kontaktmöglichkeit: <span
+              class:list={{ placeholder: hasPlaceholder(site.owner.additionalContact) }}
+              >{site.owner.additionalContact}</span
+            >
+          </p>
+        </section>
+
+        <section id="website">
+          <h2>2. Besuch dieser Website</h2>
+
+          <h3>Technisch notwendige Bereitstellung</h3>
+          <p>
+            Wenn du diese Website aufrufst, muss der später ausgewählte Hostinganbieter technisch
+            notwendige Verbindungs- und Zugriffsdaten verarbeiten, damit die angeforderten Inhalte an
+            dein Gerät ausgeliefert, Fehler behoben und Angriffe abgewehrt werden können. Dazu können –
+            abhängig von der tatsächlichen Hostingkonfiguration – insbesondere IP-Adresse, Zeitpunkt,
+            angeforderte Datei, übertragene Datenmenge, Statuscode, Referrer sowie Browser- und
+            Betriebssystemangaben gehören.
+          </p>
+          <p>
+            Soweit Werner Francis Reineke diese Verarbeitung verantwortet, ist die vorgesehene
+            Rechtsgrundlage Art. 6 Abs. 1 Buchst. f DSGVO. Das berechtigte Interesse liegt in einer
+            sicheren, stabilen und technisch funktionsfähigen Bereitstellung der Website. Vor der
+            Veröffentlichung wird geprüft und dokumentiert, welche Protokolle wirklich anfallen und ob
+            die Verarbeitung dafür erforderlich ist.
+          </p>
+
+          <div class="hosting-placeholder">
+            <h3>Hostingangaben vor Veröffentlichung zu vervollständigen</h3>
+            <dl class="contact-list">
+              <div>
+                <dt>Anbieter</dt>
+                <dd class="placeholder">{site.hosting.provider}</dd>
+              </div>
+              <div>
+                <dt>Speicherdauer oder Löschkriterien für Zugriffsprotokolle</dt>
+                <dd class="placeholder">{site.hosting.accessLogDeletionCriteria}</dd>
+              </div>
+              <div>
+                <dt>Empfänger und Unterauftragnehmer</dt>
+                <dd class="placeholder">{site.hosting.recipientsAndProcessors}</dd>
+              </div>
+              <div>
+                <dt>Verarbeitungsorte und mögliche Drittlandübermittlungen</dt>
+                <dd class="placeholder">{site.hosting.processingLocationsAndTransfers}</dd>
+              </div>
+            </dl>
+            <p>
+              Anbieter, Protokollumfang, Speicherdauer, Unterauftragnehmer und Drittlandtransfers werden
+              nicht geschätzt. Vor dem öffentlichen Betrieb werden sie anhand des gewählten Tarifs,
+              eines Vertrags zur Auftragsverarbeitung und der realen Konfiguration ergänzt.
+            </p>
+          </div>
+
+          <h3>Keine Trackingtechnik und kein Cookie-Banner</h3>
+          <p>
+            Die Website bindet keine Analyse-, Werbe-, Karten-, Video- oder Social-Media-Dienste ein.
+            Sie setzt nach aktuellem technischen Stand keine Cookies und verwendet weder Local Storage
+            noch vergleichbare Browserspeicher. Daher erscheint kein Einwilligungsbanner. Vor dem
+            Hostingstart wird nochmals geprüft, ob der konkrete Anbieter oder ein aktivierter
+            Sicherheitsdienst zusätzliche Endgerätespeicherungen auslöst.
+          </p>
+        </section>
+
+        <section id="supportanfragen">
+          <h2>3. Supportanfragen und E-Mails</h2>
+          <p>
+            Wenn du Werner Francis Reineke kontaktierst, werden die von dir übermittelten Angaben –
+            typischerweise E-Mail-Adresse, Nachrichteninhalt sowie technische Angaben, die du freiwillig
+            mitteilst – verarbeitet, um die Anfrage zu beantworten und den Vorgang nachzuvollziehen.
+          </p>
+          <p>
+            Bei vertragsbezogenen oder vorvertraglichen Anfragen ist Art. 6 Abs. 1 Buchst. b DSGVO die
+            Rechtsgrundlage. Für allgemeine Support- und Produktanfragen ist sie Art. 6 Abs. 1 Buchst. f
+            DSGVO; das berechtigte Interesse besteht in einer verlässlichen Bearbeitung der Anfrage und
+            Verbesserung des Supports. Soweit eine gesetzliche Aufbewahrungspflicht greift, kommt Art. 6
+            Abs. 1 Buchst. c DSGVO hinzu.
+          </p>
+          <p>
+            Die Daten werden gelöscht, wenn die Anfrage abschließend bearbeitet ist und keine
+            gesetzlichen Aufbewahrungspflichten, Verjährungsfristen oder berechtigten Gründe zur
+            Dokumentation mehr entgegenstehen. Bitte übermittle keine Gesundheitsdaten, keine genaue
+            Position und keine sonstigen sensiblen Informationen, die für den Support nicht nötig sind.
+          </p>
+        </section>
+
+        <section id="store-links">
+          <h2>4. Externe Links zu App Stores</h2>
+          <p>
+            Sobald echte Store-URLs eingetragen sind, führen Links auf dieser Website zum Apple App
+            Store oder zu Google Play. Erst wenn du einen solchen externen Link öffnest, verlässt du
+            diese Website. Apple beziehungsweise Google erhält dann technisch notwendige
+            Verbindungsdaten und kann weitere Daten nach eigenen Regeln und in eigener Verantwortung
+            verarbeiten. Die derzeit sichtbaren Hinweise „Demnächst erhältlich“ sind nicht klickbar.
+          </p>
+          <p>
+            Informationen der Plattformbetreiber findest du in den offiziellen Datenschutzhinweisen
+            von{' '}<a href="https://www.apple.com/de/legal/privacy/" rel="external">Apple</a>{' '}
+            und{' '}<a href="https://policies.google.com/privacy?hl=de" rel="external">Google</a>.
+          </p>
+        </section>
+
+        <section id="app">
+          <h2>5. Mobile App zumHermann</h2>
+
+          <h3>Standort und Geräteausrichtung</h3>
+          <p>
+            Die App benötigt deinen ungefähren beziehungsweise genauen Vordergrundstandort und die vom
+            Gerät bereitgestellte Kompassausrichtung, um die Luftlinienentfernung und Richtung zum
+            Hermannsdenkmal zu bestimmen. Sie fordert Standortzugriff während der Nutzung an, nicht als
+            Hintergrundortung.
+          </p>
+          <p>
+            Die Berechnung erfolgt lokal auf dem Gerät gegen die fest hinterlegte Position des
+            Hermannsdenkmals. Standort, Kompassrichtung und daraus berechnete Werte werden vom App-Code
+            nicht an Werner Francis Reineke oder ein eigenes Backend übertragen. Es gibt kein eigenes
+            Benutzerkonto und kein eigenes Backend.
+          </p>
+          <p>
+            Die App speichert Standortkoordinaten und Kompasswerte nicht dauerhaft. Während einer
+            aktiven Messsitzung werden sie im Arbeitsspeicher verarbeitet. Dein Betriebssystem und seine
+            Standortdienste – auf Android insbesondere Google Play-Dienste Standort, auf iOS Core
+            Location – können Standort- und Diagnosedaten nach ihren eigenen Einstellungen und Regeln
+            verarbeiten. Diese Plattformverarbeitung ist von der fehlenden Übertragung an Werner
+            Francis Reineke zu unterscheiden.
+          </p>
+
+          <h3>Lokale App-Einstellungen</h3>
+          <p>
+            Die App speichert lokal, ob die Einführung bereits abgeschlossen wurde. Außerdem liest sie
+            die Systemeinstellung „Bewegung reduzieren“, damit Animationen barriereärmer dargestellt
+            werden. Standort und Kompasswerte werden nicht in diesem lokalen Einstellungswert abgelegt.
+            Je nach Betriebssystemeinstellung kann der Einführungsstatus in einem Plattform-Backup
+            gesichert und später wiederhergestellt werden.
+          </p>
+
+          <h3>Teilen-Funktion</h3>
+          <p>
+            Nach deiner ausdrücklichen Auswahl erzeugt die App lokal eine temporäre Ergebnisgrafik und
+            öffnet die systemeigene Teilen-Funktion. Die Grafik enthält den Produktnamen, die gerundete
+            Entfernung zum Hermannsdenkmal, die Richtungsgenauigkeit, einen Begleittext und einen
+            Hashtag. Sie enthält keine genaue Nutzerposition, keine Koordinaten, keinen Ortsnamen,
+            keinen Zeitstempel und keine Gerätekennung.
+          </p>
+          <p>
+            Du entscheidest selbst über Empfänger und Zielanwendung. Erst die von dir ausgewählte App
+            verarbeitet die Grafik anschließend in eigener Verantwortung. Die temporäre Datei kann im
+            App-Cache verbleiben, bis das Betriebssystem den Cache bereinigt oder die App-Daten entfernt
+            werden.
+          </p>
+
+          <h3>Keine Werbung, Analyse oder eigene Nutzerverfolgung</h3>
+          <p>
+            Im geprüften App-Code sind keine Werbung, keine Betreiber-Analytics, kein Tracking, keine
+            Remote-API und kein Drittanbieter-Crash-Reporting eingebaut. Vor der rechtlichen Freigabe
+            wird zusätzlich das endgültige Produktionsbinary samt Netzwerkverhalten und
+            Plattformmanifesten kontrolliert.
+          </p>
+
+          <h3>Berechtigungen und Löschung</h3>
+          <p>
+            Du kannst den Standortzugriff jederzeit in den Geräteeinstellungen widerrufen. Ohne diese
+            Berechtigung kann die App Richtung und Entfernung nicht berechnen. Lokale App-Daten lassen
+            sich – abhängig vom Betriebssystem – durch Zurücksetzen der App-Daten oder Deinstallieren
+            entfernen. Unabhängig angelegte Plattform-Backups verwaltest du über dein Apple- oder
+            Google-Konto.
+          </p>
+
+          <h3>Apple und Google</h3>
+          <p>
+            Apple und Google können im Rahmen ihrer Stores, Betriebssysteme, Standortdienste,
+            Kauf-/Downloadhistorie und optionalen Diagnosedienste personenbezogene Daten in eigener
+            Verantwortung verarbeiten. Welche Daten anfallen, hängt von deinem Gerät, Konto und den
+            gewählten Plattform-Datenschutzeinstellungen ab. Maßgeblich sind die oben verlinkten
+            Datenschutzhinweise und Einstellungen des jeweiligen Anbieters.
+          </p>
+        </section>
+
+        <section id="rechte">
+          <h2>6. Deine Datenschutzrechte</h2>
+          <p>Unter den gesetzlichen Voraussetzungen hast du insbesondere das Recht auf:</p>
+          <ul>
+            <li>Auskunft über verarbeitete personenbezogene Daten (Art. 15 DSGVO),</li>
+            <li>Berichtigung unrichtiger Daten (Art. 16 DSGVO),</li>
+            <li>Löschung (Art. 17 DSGVO),</li>
+            <li>Einschränkung der Verarbeitung (Art. 18 DSGVO),</li>
+            <li>Datenübertragbarkeit, soweit Art. 20 DSGVO anwendbar ist,</li>
+            <li>
+              Widerspruch gegen Verarbeitungen aufgrund berechtigter Interessen unter den
+              Voraussetzungen des Art. 21 DSGVO,
+            </li>
+            <li>Widerruf einer Einwilligung für die Zukunft, falls eine Verarbeitung darauf beruht.</li>
+          </ul>
+          <p>
+            Zur Ausübung deiner Rechte kannst du den oben genannten Verantwortlichen kontaktieren. Ein
+            Widerruf berührt die Rechtmäßigkeit der Verarbeitung bis zum Widerruf nicht.
+          </p>
+
+          <h3>Beschwerderecht</h3>
+          <p>
+            Du hast nach Art. 77 DSGVO das Recht, dich bei einer Datenschutzaufsichtsbehörde zu
+            beschweren, insbesondere an deinem üblichen Aufenthaltsort, deinem Arbeitsplatz oder am Ort
+            des vermuteten Verstoßes. Die für Werner Francis Reineke zuständige Landesbehörde wird nach
+            Ergänzung der Betreiberanschrift konkret benannt.
+          </p>
+          <p>
+            Die aktuelle DSGVO ist auf{' '}
+            <a href="https://eur-lex.europa.eu/eli/reg/2016/679/oj?locale=de" rel="external"
+              >EUR-Lex</a
+            > abrufbar.
+          </p>
+        </section>
+
+        <section>
+          <h2>7. Stand und Änderungen</h2>
+          <p>
+            Stand dieses technischen Entwurfs: 17. August 2026. Vor Veröffentlichung werden die
+            Hostingkonfiguration, Pflichtkontaktangaben, Store-Links und das endgültige App-Binary
+            erneut geprüft. Wesentliche Änderungen der Datenverarbeitung werden in dieser Erklärung
+            nachvollziehbar aktualisiert.
+          </p>
+        </section>
+      </div>
+    </div>
+  </article>
+</BaseLayout>

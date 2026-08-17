@@ -1,0 +1,218 @@
+---
+import FeatureCard from '../components/FeatureCard.astro';
+import SectionHeading from '../components/SectionHeading.astro';
+import StepCard from '../components/StepCard.astro';
+import StoreButtons from '../components/StoreButtons.astro';
+import BaseLayout from '../layouts/BaseLayout.astro';
+---
+
+<BaseLayout>
+  <section class="hero">
+    <div class="mist-layer mist-layer--one" aria-hidden="true"></div>
+    <div class="mist-layer mist-layer--two" aria-hidden="true"></div>
+    <div class="shell hero-grid">
+      <div class="hero-copy">
+        <p class="eyebrow">Heimatgefühl mit Peilung</p>
+        <h1>Der sagenhafte Richtungs&shy;kompass aus Ostwestfalen.</h1>
+        <p class="hero-lead">
+          Wo immer du gerade bist: <strong>zumHermann</strong> zeigt dir, in welcher Richtung das
+          Hermannsdenkmal liegt – und wie weit der Weg durch den Nebel wäre.
+        </p>
+        <StoreButtons />
+        <p class="hero-note">Für iOS und Android in Vorbereitung.</p>
+      </div>
+      <div class="hero-art">
+        <picture>
+          <source
+            srcset="/assets/brand-lockup-608.png 608w, /assets/brand-lockup.png 1216w"
+            sizes="(max-width: 760px) 92vw, 48vw"
+          />
+          <img
+            src="/assets/brand-lockup.png"
+            width="1216"
+            height="560"
+            alt="zumHermann: Das Hermannsdenkmal über einem bewaldeten Höhenzug vor nebligen Hügeln"
+            fetchpriority="high"
+          />
+        </picture>
+      </div>
+    </div>
+    <div class="forest-edge" aria-hidden="true"></div>
+  </section>
+
+  <section class="section section--paper" id="so-funktionierts">
+    <div class="shell">
+      <SectionHeading
+        eyebrow="Drei Schritte"
+        title="So funktioniert es"
+        intro="Kein Kartenstudium, keine Wanderstiefel. Dein Smartphone und ein ruhiger Dreh genügen."
+      />
+      <div class="step-grid">
+        <StepCard
+          number="01"
+          title="Standort freigeben"
+          text="Die App benötigt deinen aktuellen Standort, um Entfernung und Zielrichtung lokal zu berechnen."
+        />
+        <StepCard
+          number="02"
+          title="Handy ausrichten"
+          text="Halte dein Smartphone möglichst flach. Die Oberkante zeigt die Richtung an."
+        />
+        <StepCard
+          number="03"
+          title="Hermann finden"
+          text="Sieh live, wo Hermann liegt, wie weit es ist und wie genau du das Ziel hältst."
+        />
+      </div>
+    </div>
+  </section>
+
+  <section class="section section--mist" id="funktionen">
+    <div class="shell">
+      <SectionHeading
+        eyebrow="Weniger Schnickschnack, mehr Richtung"
+        title="Alles an Bord, was Hermann braucht"
+        intro="Die App konzentriert sich auf eine einzige, wunderbar ostwestfälische Mission."
+      />
+      <div class="feature-grid">
+        <FeatureCard
+          marker="N"
+          title="Richtungskompass"
+          text="Ein klarer Live-Hinweis zeigt, wie du dein Smartphone zum Hermannsdenkmal drehen musst."
+        />
+        <FeatureCard
+          marker="KM"
+          title="Entfernung"
+          text="Die Luftlinie zum Hermann wird direkt auf deinem Gerät ausgerechnet und gut lesbar angezeigt."
+        />
+        <FeatureCard
+          marker="↗"
+          title="Ergebnis teilen"
+          text="Erstelle eine Ergebnisgrafik mit Entfernung und Genauigkeit – ohne genaue Position oder Koordinaten."
+        />
+        <FeatureCard
+          marker="LOKAL"
+          title="Lokale Verarbeitung"
+          text="Standort und Kompassdaten werden nicht an Werner Francis Reineke oder ein eigenes Backend übertragen."
+        />
+      </div>
+    </div>
+  </section>
+
+  <section class="trust-band" aria-labelledby="trust-title">
+    <div class="shell trust-inner">
+      <p class="eyebrow eyebrow--light">Privatsphäre ohne Nebelkerzen</p>
+      <h2 id="trust-title">Kein Konto. Kein Tracking. Keine Werbung.</h2>
+      <p>
+        Die Kernfunktion läuft lokal auf deinem Smartphone. Die Website setzt ebenfalls keine
+        Analysewerkzeuge, Werbetechnik oder nicht notwendigen Cookies ein.
+      </p>
+      <a class="text-link text-link--light" href="/datenschutz">Datenschutz im Detail</a>
+    </div>
+  </section>
+
+  <section class="section story-section" id="der-spruch">
+    <div class="shell story-grid">
+      <div class="story-art" aria-hidden="true">
+        <img src="/assets/hermann-scene.png" width="480" height="368" alt="" loading="lazy" />
+      </div>
+      <div class="story-copy">
+        <p class="eyebrow">Man erzählt sich …</p>
+        <h2>Ein Spruch mit Heimatblick</h2>
+        <p>
+          „Richtung Hermann“ ist ein regionaler, augenzwinkernder Spruch aus Ostwestfalen. Eine
+          belastbare historische Überlieferung als alte Sage ist nicht belegt. <strong>zumHermann</strong>{' '}
+          macht daraus eine moderne digitale Erzählung – nicht mehr und nicht weniger.
+        </p>
+        <p>
+          Der Kompass ist echt. Die versprochene Wirkung des Spruchs ist es ausdrücklich nicht.
+          Ostwestfälisch trocken darf man darüber trotzdem schmunzeln.
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <section class="section section--paper disclaimer-section" aria-labelledby="disclaimer-title">
+    <div class="shell">
+      <div class="disclaimer-card">
+        <p class="eyebrow">Wissenschaftlicher Hinweis</p>
+        <h2 id="disclaimer-title">Unterhaltung, keine Gesundheitswirkung</h2>
+        <p>
+          Die Ausrichtung zum Hermannsdenkmal hat keinerlei nachgewiesenen Einfluss auf Empfängnis,
+          Fruchtbarkeit oder das Geschlecht eines Kindes. Diese App dient ausschließlich der
+          Unterhaltung.
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <section class="section faq-section" id="faq">
+    <div class="shell faq-layout">
+      <SectionHeading
+        eyebrow="Kurz gefragt"
+        title="Häufige Fragen"
+        intro="Alles Wichtige, bevor du dein Smartphone Richtung Teuto hältst."
+      />
+      <div class="faq-list">
+        <details>
+          <summary>Was macht zumHermann genau?</summary>
+          <p>
+            Die App berechnet aus deinem aktuellen Standort die Luftlinie und die Richtung zum
+            Hermannsdenkmal. Mit der Geräteausrichtung zeigt sie dir, wie du dein Smartphone drehen
+            musst.
+          </p>
+        </details>
+        <details>
+          <summary>Wird mein Standort übertragen?</summary>
+          <p>
+            Nein. Der App-Code berechnet Richtung und Entfernung auf deinem Gerät und überträgt
+            Standort- oder Kompassdaten nicht an Werner Francis Reineke oder ein eigenes Backend.
+            Dein Betriebssystem und dessen Standortdienste können Daten in eigener Verantwortung
+            verarbeiten.
+          </p>
+        </details>
+        <details>
+          <summary>Was steht in der geteilten Grafik?</summary>
+          <p>
+            Die Grafik enthält die gerundete Entfernung und Richtungsgenauigkeit. Genaue Position,
+            Koordinaten, Ortsname und Zeitstempel erscheinen dort nicht. Du entscheidest im
+            systemeigenen Teilen-Menü selbst über Empfänger und Ziel-App.
+          </p>
+        </details>
+        <details>
+          <summary>Ist die Geschichte wissenschaftlich oder historisch belegt?</summary>
+          <p>
+            Nein. Der Spruch wird als regionaler Humor und moderne Erzählung eingeordnet. Eine
+            medizinische Wirkung oder belastbare alte Überlieferung wird nicht behauptet.
+          </p>
+        </details>
+        <details>
+          <summary>Wann erscheint die App?</summary>
+          <p>
+            Die Store-Veröffentlichung wird vorbereitet. Sobald echte Store-Links vorliegen, werden
+            die bisher nicht klickbaren Hinweise auf dieser Seite ersetzt.
+          </p>
+        </details>
+        <details>
+          <summary>Braucht die Website einen Cookie-Banner?</summary>
+          <p>
+            Nach aktuellem technischen Stand nein: Diese Website setzt keine Cookies, kein Tracking
+            und keinen Browserspeicher ein. Technisch notwendige Serverzugriffe des späteren Hosters
+            werden vor Veröffentlichung konkret dokumentiert.
+          </p>
+        </details>
+      </div>
+    </div>
+  </section>
+
+  <section class="closing-cta">
+    <div class="shell closing-inner">
+      <div>
+        <p class="eyebrow eyebrow--light">Bald im Store</p>
+        <h2>Die Richtung steht schon fest.</h2>
+        <p>Die App folgt, sobald Store-Seiten und Pflichtangaben vollständig sind.</p>
+      </div>
+      <StoreButtons />
+    </div>
+  </section>
+</BaseLayout>

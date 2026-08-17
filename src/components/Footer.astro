@@ -1,0 +1,23 @@
+---
+import { site } from '../config/site';
+---
+
+<footer class="site-footer">
+  <div class="shell footer-grid">
+    <div>
+      <p class="footer-brand">{site.name}</p>
+      <p class="footer-copy">Ein digitaler Heimatwitz mit erstaunlich genauer Richtung.</p>
+    </div>
+    <nav aria-label="Rechtliches und Support">
+      <ul class="footer-links">
+        <li><a href="/impressum">Impressum</a></li>
+        <li><a href="/datenschutz">Datenschutz</a></li>
+        <li><a href="/support">Support</a></li>
+      </ul>
+    </nav>
+    <p class="footer-meta">
+      © {new Date().getFullYear()} {site.owner.name}<br />
+      Kein Konto. Kein Tracking. Keine Werbung.
+    </p>
+  </div>
+</footer>

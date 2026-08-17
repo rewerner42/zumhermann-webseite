@@ -1,0 +1,96 @@
+---
+import LegalDraftNotice from '../components/LegalDraftNotice.astro';
+import { hasPlaceholder, site } from '../config/site';
+import BaseLayout from '../layouts/BaseLayout.astro';
+
+const emailReady = !hasPlaceholder(site.owner.email);
+---
+
+<BaseLayout
+  title="Impressum"
+  description="Impressum und Anbieterkennzeichnung der Website und App zumHermann."
+  noindex={!site.release.publicReleaseApproved}
+>
+  <section class="page-hero">
+    <div class="shell page-hero-inner">
+      <p class="eyebrow">Anbieterkennzeichnung</p>
+      <h1>Impressum</h1>
+      <p>Angaben zum verantwortlichen Betreiber von zumHermann.</p>
+    </div>
+  </section>
+
+  <article class="legal-page section">
+    <div class="shell legal-document">
+      <LegalDraftNotice />
+
+      <section>
+        <h2>Angaben gemäß § 5 DDG und § 18 Abs. 1 MStV</h2>
+        <p>
+          <strong>{site.owner.name}</strong><br />
+          <span class:list={{ placeholder: hasPlaceholder(site.owner.street) }}>{site.owner.street}</span
+          ><br />
+          <span class:list={{ placeholder: hasPlaceholder(site.owner.postalCity) }}
+            >{site.owner.postalCity}</span
+          >
+        </p>
+      </section>
+
+      <section>
+        <h2>Kontakt</h2>
+        <dl class="contact-list">
+          <div>
+            <dt>E-Mail</dt>
+            <dd>
+              {
+                emailReady ? (
+                  <a href={`mailto:${site.owner.email}`}>{site.owner.email}</a>
+                ) : (
+                  <span class="placeholder">{site.owner.email}</span>
+                )
+              }
+            </dd>
+          </div>
+          <div>
+            <dt>Weitere schnelle und unmittelbare Kontaktmöglichkeit</dt>
+            <dd class:list={{ placeholder: hasPlaceholder(site.owner.additionalContact) }}>
+              {site.owner.additionalContact}
+            </dd>
+          </div>
+        </dl>
+      </section>
+
+      {
+        site.legal.consumerDisputeInformation && (
+          <section>
+            <h2>Verbraucherstreitbeilegung</h2>
+            <p
+              class:list={{
+                placeholder: hasPlaceholder(site.legal.consumerDisputeInformation),
+              }}
+            >
+              {site.legal.consumerDisputeInformation}
+            </p>
+            {hasPlaceholder(site.legal.consumerDisputeInformation) && (
+              <p class="legal-note">
+                Dieser Abschnitt wird erst nach Prüfung von Unternehmerstatus, Beschäftigtenzahl,
+                Teilnahmebereitschaft und einer möglichen gesetzlichen oder vertraglichen
+                Verpflichtung finalisiert. Eine Bereitschaft zur Teilnahme wird hiermit nicht erklärt.
+              </p>
+            )}
+          </section>
+        )
+      }
+
+      <section>
+        <h2>Hinweis zum Inhalt</h2>
+        <p>
+          Die Website beschreibt die Unterhaltungs-App zumHermann. Es wird keine offizielle Verbindung
+          zum Hermannsdenkmal oder zu dessen Trägern behauptet. Die medizinische und historische
+          Einordnung findest du auf der Startseite.
+        </p>
+      </section>
+
+      <p class="document-status">Interner rechtlicher Entwurf · Stand 17. August 2026</p>
+    </div>
+  </article>
+</BaseLayout>

@@ -1,0 +1,42 @@
+---
+interface Props {
+  currentPath: string;
+}
+
+const { currentPath } = Astro.props;
+const navigation = [
+  { href: '/#so-funktionierts', label: 'So funktioniert es' },
+  { href: '/#faq', label: 'FAQ' },
+  { href: '/support', label: 'Support' },
+];
+---
+
+<header class="site-header">
+  <div class="shell header-inner">
+    <a class="brand-home" href="/" aria-label="zumHermann – zur Startseite">
+      <img
+        src="/assets/brand-lockup-608.png"
+        width="608"
+        height="280"
+        alt=""
+        aria-hidden="true"
+      />
+    </a>
+    <nav aria-label="Hauptnavigation">
+      <ul class="nav-list">
+        {
+          navigation.map((item) => (
+            <li>
+              <a
+                href={item.href}
+                aria-current={currentPath === item.href ? 'page' : undefined}
+              >
+                {item.label}
+              </a>
+            </li>
+          ))
+        }
+      </ul>
+    </nav>
+  </div>
+</header>

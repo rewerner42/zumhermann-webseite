@@ -1,0 +1,84 @@
+---
+import Footer from '../components/Footer.astro';
+import Header from '../components/Header.astro';
+import { isConfiguredUrl, site, siteOrigin } from '../config/site';
+import '../styles/global.css';
+
+interface Props {
+  title?: string;
+  description?: string;
+  noindex?: boolean;
+}
+
+const {
+  title = site.name,
+  description = site.description,
+  noindex = false,
+} = Astro.props;
+const fullTitle = title === site.name ? `${site.name} – ${site.tagline}` : `${title} | ${site.name}`;
+const origin = siteOrigin();
+const canonical = origin ? new URL(Astro.url.pathname, `${origin}/`).toString() : undefined;
+const socialImage = origin ? new URL('/assets/social-preview.png', `${origin}/`).toString() : undefined;
+const storeLinks = [site.stores.apple, site.stores.google].filter(isConfiguredUrl);
+
+const structuredData = {
+  '@context': 'https://schema.org',
+  '@type': 'SoftwareApplication',
+  name: site.name,
+  description: site.description,
+  applicationCategory: 'EntertainmentApplication',
+  operatingSystem: 'iOS, Android',
+  inLanguage: 'de',
+  author: {
+    '@type': 'Person',
+    name: site.owner.name,
+  },
+  ...(origin ? { url: origin } : {}),
+  ...(storeLinks.length > 0 ? { downloadUrl: storeLinks } : {}),
+  featureList: [
+    'Richtung zum Hermannsdenkmal',
+    'Luftlinienentfernung zum Hermannsdenkmal',
+    'Teilbare Ergebnisgrafik ohne Nutzerkoordinaten',
+    'Lokale Verarbeitung auf dem Gerät',
+  ],
+};
+---
+
+<!doctype html>
+<html lang="de">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width" />
+    <meta name="theme-color" content="#f4f1e8" />
+    <meta name="color-scheme" content="light" />
+    <meta name="description" content={description} />
+    {noindex && <meta name="robots" content="noindex, nofollow" />}
+    {canonical && <link rel="canonical" href={canonical} />}
+    <link rel="icon" type="image/png" sizes="196x196" href="/assets/favicon.png" />
+    <link rel="apple-touch-icon" sizes="1024x1024" href="/assets/app-icon.png" />
+    <meta property="og:type" content="website" />
+    <meta property="og:locale" content={site.locale} />
+    <meta property="og:site_name" content={site.name} />
+    <meta property="og:title" content={fullTitle} />
+    <meta property="og:description" content={description} />
+    {canonical && <meta property="og:url" content={canonical} />}
+    {socialImage && <meta property="og:image" content={socialImage} />}
+    {socialImage && <meta property="og:image:width" content="1216" />}
+    {socialImage && <meta property="og:image:height" content="560" />}
+    {socialImage && <meta property="og:image:alt" content="zumHermann mit Hermannsdenkmal, bewaldetem Höhenzug und nebligen Hügeln" />}
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content={fullTitle} />
+    <meta name="twitter:description" content={description} />
+    {socialImage && <meta name="twitter:image" content={socialImage} />}
+    <title>{fullTitle}</title>
+    <script type="application/ld+json" set:html={JSON.stringify(structuredData)} is:inline></script>
+  </head>
+  <body>
+    <a class="skip-link" href="#main-content">Zum Inhalt springen</a>
+    <Header currentPath={Astro.url.pathname} />
+    <main id="main-content">
+      <slot />
+    </main>
+    <Footer />
+  </body>
+</html>

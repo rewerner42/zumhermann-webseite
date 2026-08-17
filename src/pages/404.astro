@@ -1,0 +1,30 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+---
+
+<BaseLayout
+  title="Seite nicht gefunden"
+  description="Diese Seite liegt offenbar nicht Richtung Hermann."
+  noindex={true}
+>
+  <section class="not-found">
+    <div class="shell not-found-grid">
+      <div>
+        <p class="error-code" aria-hidden="true">404</p>
+        <p class="eyebrow">Kurz vom Weg abgekommen</p>
+        <h1>Hier liegt Hermann jedenfalls nicht.</h1>
+        <p>
+          Die gesuchte Seite wurde nicht gefunden. Der zuverlässigste Richtungswechsel führt zurück
+          zur Startseite.
+        </p>
+        <a class="primary-link" href="/">Zur Startseite</a>
+      </div>
+      <img
+        src="/assets/hermann-scene.png"
+        width="480"
+        height="368"
+        alt="Hermannsdenkmal auf einem bewaldeten Höhenzug"
+      />
+    </div>
+  </section>
+</BaseLayout>
