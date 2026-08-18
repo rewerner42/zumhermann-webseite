@@ -27,10 +27,14 @@ jobs:
       - name: Veröffentlichungsvoraussetzungen und Website prüfen
         run: npm run release:build
 
-      - name: Geprüftes statisches Artefakt bereitstellen
+      - name: Geprüftes Worker-Artefakt und Auditnachweise bereitstellen
         uses: actions/upload-artifact@v7
         with:
-          name: zumhermann-web-dist
-          path: dist/
+          name: zumhermann-worker-release-audit
+          path: |
+            dist/
+            .wrangler/audit/
+            .wrangler/dry-run/
+          include-hidden-files: true
           if-no-files-found: error
           retention-days: 14

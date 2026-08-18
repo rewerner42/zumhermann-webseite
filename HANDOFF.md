@@ -1,6 +1,6 @@
 # Website-Handoff – zumHermann
 
-Stand: 17. August 2026  
+Stand: 18. August 2026
 Projektpfad: `/Users/werner/Documents/zumHermann/zumhermann-web`  
 Veröffentlichungsstatus: **lokal vollständig gebaut, öffentliche Veröffentlichung gesperrt**
 
@@ -13,7 +13,8 @@ Veröffentlichungsstatus: **lokal vollständig gebaut, öffentliche Veröffentli
 - responsive Gestaltung für kleine und große Smartphones, Tablets und Desktop;
 - zentrale Konfiguration in `src/config/site.ts`;
 - Sitemap, robots.txt, Favicons, App-Icon, Open Graph, Twitter-Metadaten und `SoftwareApplication`-Strukturdaten;
-- Sicherheitsheader für Cloudflare Pages;
+- asset-only Cloudflare Worker mit Static Assets, Custom 404, slashlosem Routing und Sicherheitsheadern;
+- öffentliche `workers.dev`- und Preview-URLs sowie Workers Observability und Logpush deaktiviert;
 - kein Backend, kein Tracking, keine Werbung, kein Cookie-Banner und kein eigenes Client-JavaScript;
 - Rechts-/Pflichtangabengate, Inhaltsprüfung, Build-Ausgabeprüfung und GitHub-Actions-Workflows.
 
@@ -53,17 +54,28 @@ Offen bleibt vor dem App-Release der Audit des finalen Produktionsbinarys, einsc
 
 Erfolgreich:
 
-- Astro-/TypeScript-Prüfung: 22 Dateien, 0 Fehler, 0 Warnungen, 0 Hinweise;
+- Astro-/TypeScript-Prüfung: 25 Dateien, 0 Fehler, 0 Warnungen, 0 Hinweise;
 - Inhaltsprüfung: Pflichtseiten, interne Links, Sprungziele und Bild-Alternativtexte;
 - statischer Astro-Build: 5 HTML-Seiten plus robots.txt und Sitemap;
 - Post-Build-Prüfung: interne Links, Assets, Alternativtexte und Pflichtdateien;
 - Browserprüfung ohne Warnungen oder Fehler;
-- responsive Sichtprüfung bei 390 × 844, 768 × 1024 und 1440 × 1000 Pixeln;
-- FAQ-Interaktion und sichtbarer Tastaturfokus;
+- responsive Sichtprüfung bei 390 × 844 und 1280 × 720 Pixeln;
+- FAQ-Interaktion;
 - keine horizontale Überbreite auf den geprüften Mobilseiten;
 - kein extern geladenes Bild, Stylesheet oder Skript in der Browserprüfung;
 - freundliche 404-Ausgabe;
-- exakte Asset-Hashes und Bilddimensionen geprüft.
+- exakte Asset-Hashes und Bilddimensionen geprüft;
+- unabhängiger Vorbuild-Audit durch zwei Prüfer: technisch freigegeben, alle Befunde behoben;
+- Worker-Artefaktprüfung: 15 Assets plus eine `_headers`-Metadatei, 4.789.667 Byte, größte Datei
+  1.423.624 Byte, vollständiges SHA-256-Manifest;
+- lokaler Wrangler-Smoke-Test: acht Headerregeln, slashlose Routen, Weiterleitung, eigene 404,
+  Sicherheits-/Cacheheader und fehlende `Set-Cookie`-Header geprüft;
+- Wrangler-Dry-Run: erwarteter 313-Byte-No-op-Worker ohne Imports, Bindings oder eigenen Laufzeitcode;
+- unabhängiger Post-Build-Audit durch zwei Prüfer: technisch GO, keine zusätzlichen Befunde;
+- `npm audit` und `npm audit --omit=dev`: 0 bekannte Schwachstellen.
+
+Die maschinenlesbaren Hash-, Inventar-, Smoke- und Dry-Run-Nachweise liegen lokal unter `.wrangler/`
+und werden vom manuellen Release-Workflow zusammen mit `dist/` archiviert.
 
 Erwartet fehlgeschlagen:
 
@@ -77,16 +89,21 @@ Exakt offen sind:
 - Postleitzahl und Ort;
 - Support-/Kontakt-E-Mail;
 - weitere schnelle und unmittelbare Kontaktmöglichkeit;
-- echte Domain;
 - tatsächlicher Hostinganbieter;
 - Hosting-Logumfang und Löschkriterien;
 - Hostingempfänger und Unterauftragnehmer;
 - Hosting-Verarbeitungsorte und mögliche Drittlandtransfers;
+- zuständige Datenschutzaufsichtsbehörde;
+- Cloudflare-Vertragspartner, Zonenplan, DPA/AVV und Dashboardaudit optionaler Analyse-, Sicherheits-,
+  Cookie- und Loggingfunktionen;
+- verlustfreie DNS-Migration von Squarespace zu Cloudflare einschließlich SPF, `www`-Weiterleitung und
+  HTTPS-Erzwingung;
 - gegebenenfalls Umsatzsteuer-Identifikationsnummer oder Wirtschafts-Identifikationsnummer, sofern vorhanden und rechtlich zu veröffentlichen;
 - VSBG-Entscheidung anhand Unternehmerstatus, Beschäftigtenzahl, Bindung und Bereitschaft;
 - Apple-App-Store-URL;
 - Google-Play-URL;
 - finale Produktionsbinary-/Netzwerkprüfung der App;
+- dokumentierte Bestätigung dieser Prüfung über `release.appProductionAuditComplete`;
 - individuelle rechtliche Freigabe;
 - ausdrückliche öffentliche Veröffentlichungsfreigabe.
 
@@ -100,30 +117,24 @@ Eine persönliche Steuernummer darf nicht veröffentlicht oder angefordert werde
 4. Impressum und Datenschutzerklärung individuell rechtlich prüfen lassen.
 5. Freigabe-Flags erst nach tatsächlicher Prüfung und ausdrücklicher Veröffentlichungserlaubnis setzen.
 6. `npm ci`, `npm run legal:check` und `npm run release:build` erfolgreich ausführen.
-7. Erst dann die Cloudflare-Pages-Anleitung aus `DEPLOYMENT.md` ausführen.
-8. Öffentliches Ergebnis erneut technisch, visuell und datenschutzseitig abnehmen.
+7. Squarespace-DNS nach `DEPLOYMENT.md` vollständig sichern und die Zone zu Cloudflare delegieren.
+8. Erst dann `npm run deploy` ausführen.
+9. Öffentliches Ergebnis erneut technisch, visuell und datenschutzseitig abnehmen.
 
-## Git und privates GitHub-Repository
+## Git und GitHub-Repository
 
-Das Websiteverzeichnis ist als eigenes Git-Repository auf Branch `main` initialisiert und in getrennten Commits für Architektur, Website sowie Qualität/Dokumentation versioniert. Es wurde kein Remote gesetzt.
+Das Websiteverzeichnis ist ein eigenständiges Git-Repository auf `main`. Der SSH-Remote ist
+`git@github.com:rewerner42/zumhermann-webseite.git`; der zuvor vorhandene README-Initialstand wurde
+ohne Force-Push in die Websitehistorie aufgenommen. Änderungen am übergeordneten App-Repository sind
+nicht Bestandteil der Website-Commits.
 
-`gh auth status` meldet für den aktiven Account `rewerner42` ein ungültiges Anmeldetoken. Deshalb wurde weder ein möglicherweise vorhandenes Repository geprüft noch ein neues Repository erstellt oder überschrieben. Es wurden keine Passwörter oder Tokens angefordert.
+Die Repository-Seite ist derzeit ohne GitHub-Anmeldung mit HTTP 200 erreichbar und damit öffentlich.
+Eine Änderung der GitHub-Sichtbarkeit wurde für diesen Worker-Auftrag weder angefordert noch vorgenommen.
 
-Einziger verbleibender Cloud-Schritt nach Wiederanmeldung:
-
-```sh
-gh auth login -h github.com
-gh auth status
-gh repo view rewerner42/zumhermann-web
-```
-
-Falls der letzte Befehl bestätigt, dass kein gleichnamiges Repository existiert:
-
-```sh
-gh repo create zumhermann-web --private --source=. --remote=origin --push
-```
-
-Die Sichtbarkeit muss privat bleiben. Das GitHub-Repository darf erstellt und befüllt werden; ein Hostingprojekt darf trotz privatem Repository erst nach bestandenem Veröffentlichungsgate verbunden werden.
+Wrangler 4.123.0 ist lokal per OAuth angemeldet. Im aktiven Cloudflare-Account existiert noch kein
+Worker `zumhermann-webseite`; der erste erfolgreiche Produktionsdeploy wäre daher eine Neuanlage und
+ein echter Domain-Cutover. Zugangsdaten, Tokens und private Schlüssel werden weder im Repository noch
+in dieser Dokumentation gespeichert.
 
 ## Spätere Pflege
 

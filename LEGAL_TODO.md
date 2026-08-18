@@ -1,6 +1,6 @@
 # Offene Rechts- und Pflichtangaben
 
-Stand: 17. August 2026  
+Stand: 18. August 2026
 Status: **Veröffentlichung gesperrt**
 
 Die Website ist technisch und redaktionell als Entwurf vorbereitet. Dieses Dokument ist keine individuelle Rechtsberatung. Tatsachen, Vertragssituation und endgültige Texte müssen vor dem öffentlichen Betrieb geprüft werden.
@@ -36,11 +36,15 @@ Amtliche Grundlagen:
 
 In `src/config/site.ts` fehlen:
 
-- `[[DOMAIN]]`
 - `[[HOSTINGANBIETER]]`
 - `[[HOSTING_LOESCHKRITERIEN]]`
 - `[[HOSTING_EMPFÄNGER_UND_UNTERAUFTRAGNEHMER]]`
 - `[[HOSTING_VERARBEITUNGSORTE_UND_DRITTLANDTRANSFERS]]`
+- `[[DATENSCHUTZAUFSICHTSBEHÖRDE]]`
+
+Die Produktionsdomain ist inzwischen als `https://zumhermann.de` bestätigt. Als technisches Produkt
+ist Cloudflare Workers Static Assets ausgewählt; die konkrete Vertragspartei, der Zonenplan und die
+tatsächlichen Dashboardfunktionen sind damit noch nicht belegt.
 
 Nach Auswahl des tatsächlichen Hosters anhand des gebuchten Tarifs und der realen Konfiguration prüfen:
 
@@ -53,6 +57,20 @@ Nach Auswahl des tatsächlichen Hosters anhand des gebuchten Tarifs und der real
 - ob Sicherheitsheader aus `public/_headers` vollständig übernommen werden;
 - zuständige Landesdatenschutzaufsichtsbehörde anhand der echten Betreiberanschrift benennen.
 
+Für die geplante Cloudflare-Konfiguration zusätzlich dokumentieren:
+
+- Self-Serve-Vertrag und einbezogenen Cloudflare-DPA/AVV samt tatsächlich verantwortlicher
+  Vertragspartei;
+- Zonenplan und planabhängige Aufbewahrung in Security Analytics;
+- Trennung zwischen Customer Logs/Verarbeitung im Auftrag und Cloudflares eigener operativer Network
+  Data;
+- Status von Workers Observability, Logpush, Web Analytics, Zaraz, WAF, Bot Management, Challenges,
+  Rate Limiting, Rocket Loader, Apps und Data Localization;
+- tatsächlich gesetzte Cookies beziehungsweise das belegte Ausbleiben von `Set-Cookie` auf Apex,
+  `www` und allen erreichbaren Worker-Endpunkten;
+- aktuelle Cloudflare-Unterauftragnehmer und Transfergarantien. Ohne belegte Enterprise-
+  Lokalisierungsprodukte nicht behaupten, die Verarbeitung finde ausschließlich in der EU statt.
+
 Erst danach `hosting.privacyDetailsComplete` auf `true` setzen.
 
 Amtliche Grundlagen:
@@ -61,6 +79,10 @@ Amtliche Grundlagen:
 - [§ 25 TDDDG – Schutz der Privatsphäre bei Endeinrichtungen](https://www.gesetze-im-internet.de/ttdsg/__25.html)
 - [§ 40 BDSG – Aufsichtsbehörden der Länder](https://www.gesetze-im-internet.de/bdsg_2018/__40.html)
 - [EuGH, C-582/14 – dynamische IP-Adressen](https://eur-lex.europa.eu/legal-content/DE/TXT/?uri=CELEX%3A62014CJ0582)
+- [Cloudflare Customer DPA](https://www.cloudflare.com/cloudflare-customer-dpa/)
+- [Cloudflare-Unterauftragnehmer](https://www.cloudflare.com/gdpr/subprocessors/cloudflare-services/)
+- [Cloudflare Security Analytics](https://developers.cloudflare.com/waf/analytics/security-analytics/)
+- [Cloudflare-Cookies](https://developers.cloudflare.com/fundamentals/reference/policies-compliances/cloudflare-cookies/)
 
 ## 3. Verbraucherstreitbeilegung
 
@@ -130,10 +152,14 @@ Zusätzlich erforderlich:
 
 - Markenrecherche für `zumHermann` vor Store-Veröffentlichung;
 - finale Store-Datenschutzangaben;
+- finaler Produktionsbinary-/Netzwerkaudit der App, danach erst
+  `release.appProductionAuditComplete = true`;
 - individuelle rechtliche Freigabe von Impressum und Datenschutzerklärung, danach `legal.textsApproved = true`;
 - ausdrückliche öffentliche Veröffentlichungsfreigabe von Werner Francis Reineke, danach `release.publicReleaseApproved = true`;
 - erfolgreicher Lauf von `npm run legal:check` und `npm run release:build`.
 
 ## 7. Aktueller Gate-Status
 
-`npm run legal:check` muss mit dem derzeitigen Stand fehlschlagen. Ein grüner lokaler Build oder ein privates GitHub-Repository hebt diese Veröffentlichungssperre nicht auf.
+`npm run legal:check` muss mit dem derzeitigen Stand fehlschlagen. Ein grüner lokaler Build, ein
+GitHub-Repository, ein erfolgreicher Wrangler-Dry-Run oder `noindex` hebt diese
+Veröffentlichungssperre nicht auf.

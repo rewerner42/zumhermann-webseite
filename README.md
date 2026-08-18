@@ -2,7 +2,7 @@
 
 Statische Produkt- und Supportwebsite für die App **zumHermann**. Betreiber ist persönlich **Werner Francis Reineke**. Das Projekt verwendet keine Unternehmensbezeichnung.
 
-> **Veröffentlichung gesperrt:** Pflichtangaben, echte Domain und Hostingdetails fehlen. Der lokale Entwicklungsstand funktioniert bewusst mit sichtbaren Platzhaltern; `npm run legal:check` muss bis zu deren Klärung fehlschlagen.
+> **Veröffentlichung gesperrt:** Die Domain `zumhermann.de` steht fest, aber Betreiber-, Kontakt-, Hosting- und Freigabeangaben fehlen weiterhin. Der lokale Entwicklungsstand funktioniert bewusst mit sichtbaren Platzhaltern; `npm run legal:check` muss bis zu deren Klärung fehlschlagen.
 
 ## Stack
 
@@ -13,12 +13,13 @@ Statische Produkt- und Supportwebsite für die App **zumHermann**. Betreiber ist
 - keine extern geladenen Schriften, Medien oder Einbettungen
 - keine Cookies, kein Tracking, keine Werbung und kein Browserspeicher
 
-Die gebaute Website liegt in `dist/` und eignet sich für Cloudflare Pages oder einen vergleichbaren statischen Host.
+Die gebaute Website liegt in `dist/` und ist als Cloudflare Worker mit Static Assets vorbereitet. Es gibt keinen Worker-Laufzeitcode; Cloudflare liefert ausschließlich die statischen Dateien aus.
 
 ## Voraussetzungen
 
 - Node.js 24 LTS (mindestens 22.12.0)
 - npm 10 oder neuer
+- Wrangler 4.123.0 als fest gepinnte Entwicklungsabhängigkeit
 
 Die vorgesehene Node-Version steht in `.nvmrc`.
 
@@ -36,9 +37,12 @@ Astro zeigt anschließend die lokale Adresse an. Platzhalter sind lokal erlaubt 
 ```sh
 npm run check
 npm run build
+npm run worker:audit
+npm run worker:smoke
+npm run worker:dry-run
 ```
 
-`npm run check` prüft Astro, TypeScript, Pflichtseiten, interne Links und Bild-Alternativtexte. `npm run build` erzeugt `dist/`; danach kontrolliert der automatische Post-Build-Check die ausgelieferten Links, Sprungziele, Bilder und Pflichtdateien.
+`npm run check` prüft Astro, TypeScript, Pflichtseiten, interne Links, Bild-Alternativtexte und die Cloudflare-Konfiguration. `npm run build` erzeugt `dist/`; danach kontrolliert der Post-Build-Check Links, JSON-LD, ausführbare Skripte, Sprungziele, Bilder und Pflichtdateien. Die Worker-Prüfungen inventarisieren und hashen das Artefakt, testen die lokale Cloudflare-Auslieferung und validieren Wranglers Paketierung ohne Upload.
 
 Die Veröffentlichungssperre wird separat geprüft:
 
@@ -46,7 +50,7 @@ Die Veröffentlichungssperre wird separat geprüft:
 npm run legal:check
 ```
 
-Dieser Befehl ist momentan **absichtlich rot**. Für einen späteren Release führt `npm run release:build` zuerst das Rechts-/Pflichtangabengate, dann alle Qualitätsprüfungen und zuletzt den Build aus.
+Dieser Befehl ist momentan **absichtlich rot**. Für einen späteren Release führt `npm run release:build` zuerst das Rechts-/Pflichtangabengate und danach sämtliche Qualitäts-, Build-, Artefakt-, Smoke- und Dry-Run-Prüfungen aus. Nur `npm run deploy` ist als Produktionsweg vorgesehen.
 
 ## Seiten
 
@@ -55,7 +59,7 @@ Dieser Befehl ist momentan **absichtlich rot**. Für einen späteren Release fü
 - `/datenschutz` – getrennte Datenschutzhinweise für Website und mobile App
 - `/support` – Kontakt, Standort-, Kompass-, Teilen- und Löschhilfe
 - `/404.html` – benutzerfreundliche Fehlerseite
-- `/robots.txt` – blockiert Crawler, solange die Domain nicht vollständig konfiguriert ist
+- `/robots.txt` – blockiert Crawler, solange Hosting-, Rechts- und Veröffentlichungsfreigaben fehlen
 - `/sitemap.xml` – statische Sitemap; die echte Basis-URL wird aus der zentralen Konfiguration übernommen
 
 ## Inhalte ändern
@@ -72,7 +76,7 @@ Vor einer Veröffentlichung:
 2. Nicht verfügbare Store-Links nach dokumentierter Entscheidung als leere Zeichenfolge führen; die Oberfläche zeigt dann weiterhin „Demnächst erhältlich“.
 3. Verbraucherstreitbeilegung anhand der tatsächlichen Verhältnisse entscheiden. Ist kein Hinweis erforderlich, bleibt der konfigurierte Text leer und der Abschnitt wird nicht ausgegeben.
 4. Hostingdetails anhand des wirklich gebuchten Tarifs und der realen Konfiguration ergänzen.
-5. Erst nach fachlicher Prüfung `privacyDetailsComplete`, `textsApproved` und nach ausdrücklicher Freigabe `publicReleaseApproved` auf `true` setzen.
+5. Erst nach fachlicher Prüfung `privacyDetailsComplete`, `textsApproved` und `appProductionAuditComplete` sowie nach ausdrücklicher Freigabe `publicReleaseApproved` auf `true` setzen.
 6. `npm run legal:check` und `npm run release:build` erfolgreich ausführen.
 
 Die offenen Entscheidungen und amtlichen Rechtsquellen sind in [LEGAL_TODO.md](LEGAL_TODO.md) dokumentiert.
@@ -102,4 +106,4 @@ Dieses Verzeichnis ist als eigenes Repository innerhalb eines bereits vorhandene
 
 ## Veröffentlichung
 
-Die vollständige, derzeit bewusst blockierte Cloudflare-Pages-Anleitung steht in [DEPLOYMENT.md](DEPLOYMENT.md). Eine technisch erfolgreiche lokale Website ist noch keine rechtliche Veröffentlichungsfreigabe. Die vorbereiteten Texte ersetzen keine individuelle Rechtsberatung.
+Die vollständige, derzeit bewusst blockierte Anleitung für Cloudflare Workers Static Assets und die DNS-Migration von Squarespace steht in [DEPLOYMENT.md](DEPLOYMENT.md). Eine technisch erfolgreiche lokale Website ist noch keine rechtliche Veröffentlichungsfreigabe. Die vorbereiteten Texte ersetzen keine individuelle Rechtsberatung.

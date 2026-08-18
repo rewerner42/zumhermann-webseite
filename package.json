@@ -11,19 +11,25 @@
     "dev": "astro dev",
     "start": "astro dev",
     "check:astro": "astro check",
+    "check:cloudflare": "node scripts/cloudflare-check.mjs",
     "test:content": "node scripts/content-check.mjs",
-    "check": "npm run check:astro && npm run test:content",
+    "check": "npm run check:astro && npm run test:content && npm run check:cloudflare",
     "build": "astro build",
     "postbuild": "node scripts/dist-check.mjs",
     "preview": "astro preview",
     "legal:check": "node scripts/legal-check.mjs",
-    "release:build": "npm run legal:check && npm run check && npm run build"
+    "worker:audit": "node scripts/worker-artifact-check.mjs",
+    "worker:smoke": "node scripts/worker-smoke.mjs",
+    "worker:dry-run": "WRANGLER_WRITE_LOGS=false wrangler deploy --dry-run --strict --outdir .wrangler/dry-run --metafile",
+    "release:build": "npm run legal:check && npm run check && npm run build && npm run worker:audit && npm run worker:smoke && npm run worker:dry-run",
+    "deploy": "npm run release:build && wrangler deploy --strict"
   },
   "dependencies": {
     "astro": "7.2.2"
   },
   "devDependencies": {
     "@astrojs/check": "0.9.10",
-    "typescript": "6.0.3"
+    "typescript": "6.0.3",
+    "wrangler": "4.123.0"
   }
 }

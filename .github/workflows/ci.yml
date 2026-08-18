@@ -31,3 +31,9 @@ jobs:
 
       - name: Statische Website bauen
         run: npm run build
+
+      - name: Worker-Artefakt und lokale Auslieferung prüfen
+        run: npm run worker:audit && npm run worker:smoke
+
+      - name: Cloudflare-Paketierung trocken prüfen
+        run: npm run worker:dry-run

@@ -41,6 +41,8 @@ function htmlTarget(pathname) {
 
 const htmlFiles = await walk(dist, (file) => file.endsWith('.html'));
 const htmlByFile = new Map();
+const siteConfig = await readFile(path.join(root, 'src', 'config', 'site.ts'), 'utf8');
+const publicReleaseApproved = /\bpublicReleaseApproved:\s*true\b/.test(siteConfig);
 
 for (const file of htmlFiles) {
   const html = await readFile(file, 'utf8');
@@ -49,6 +51,46 @@ for (const file of htmlFiles) {
   for (const match of html.matchAll(/<img\b[^>]*>/gi)) {
     if (!/\balt=/.test(match[0])) {
       errors.push(`${path.relative(dist, file)}: ausgeliefertes Bild ohne alt-Attribut`);
+    }
+  }
+
+  if (/\son[a-z]+\s*=/i.test(html)) {
+    errors.push(`${path.relative(dist, file)}: ausgeliefertes HTML enthält einen Inline-Eventhandler`);
+  }
+
+  for (const match of html.matchAll(/<script\b([^>]*)>([\s\S]*?)<\/script>/gi)) {
+    const attributes = match[1];
+    const body = match[2];
+
+    if (/\bsrc\s*=/.test(attributes) || !/\btype=["']application\/ld\+json["']/.test(attributes)) {
+      errors.push(`${path.relative(dist, file)}: ausführbares oder externes Skript gefunden`);
+      continue;
+    }
+
+    try {
+      JSON.parse(body);
+    } catch {
+      errors.push(`${path.relative(dist, file)}: ungültiger JSON-LD-Datenblock`);
+    }
+  }
+
+  if (publicReleaseApproved) {
+    const releaseIncompatiblePatterns = [
+      /\[\[[^\]]+\]\]/,
+      /Rechtlicher Entwurf/i,
+      /Interner rechtlicher Entwurf/i,
+      /nicht veröffentlicht/i,
+      /vor Veröffentlichung/i,
+      /vor dem öffentlichen Betrieb/i,
+      /später(?:e|en|er)? Hostinganbieter/i,
+      /Hostingangaben vor Veröffentlichung/i,
+    ];
+    for (const pattern of releaseIncompatiblePatterns) {
+      if (pattern.test(html)) {
+        errors.push(
+          `${path.relative(dist, file)}: veröffentlichungsunverträglicher Entwurfsinhalt (${pattern.source})`,
+        );
+      }
     }
   }
 
@@ -99,6 +141,18 @@ const requiredOutputs = [
 for (const output of requiredOutputs) {
   if (!(await isFile(path.join(dist, output)))) {
     errors.push(`Build-Ausgabe fehlt: ${output}`);
+  }
+}
+
+if (await isFile(path.join(dist, '_headers'))) {
+  const headers = await readFile(path.join(dist, '_headers'), 'utf8');
+  const csp = headers.match(/^\s*Content-Security-Policy:\s*(.+)$/m)?.[1] ?? '';
+  const scriptDirective = csp
+    .split(';')
+    .map((directive) => directive.trim())
+    .find((directive) => directive.startsWith('script-src'));
+  if (scriptDirective !== "script-src 'none'") {
+    errors.push('Build-Ausgabe: Content Security Policy sperrt ausführbare Skripte nicht vollständig');
   }
 }
 

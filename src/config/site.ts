@@ -12,13 +12,16 @@ export const site = {
     email: '[[E_MAIL]]',
     additionalContact: '[[WEITERE_KONTAKTMÖGLICHKEIT]]',
   },
-  domain: '[[DOMAIN]]',
+  domain: 'https://zumhermann.de',
   hosting: {
     provider: '[[HOSTINGANBIETER]]',
     accessLogDeletionCriteria: '[[HOSTING_LOESCHKRITERIEN]]',
     recipientsAndProcessors: '[[HOSTING_EMPFÄNGER_UND_UNTERAUFTRAGNEHMER]]',
     processingLocationsAndTransfers: '[[HOSTING_VERARBEITUNGSORTE_UND_DRITTLANDTRANSFERS]]',
     privacyDetailsComplete: false,
+  },
+  privacy: {
+    supervisoryAuthority: '[[DATENSCHUTZAUFSICHTSBEHÖRDE]]',
   },
   stores: {
     apple: '[[APPLE_APP_STORE_URL]]',
@@ -29,6 +32,7 @@ export const site = {
     textsApproved: false,
   },
   release: {
+    appProductionAuditComplete: false,
     publicReleaseApproved: false,
   },
 } as const;
@@ -55,4 +59,14 @@ export function isConfiguredUrl(value: string): boolean {
 
 export function siteOrigin(): string | undefined {
   return isConfiguredUrl(site.domain) ? site.domain.replace(/\/$/, '') : undefined;
+}
+
+export function isPublicReleaseReady(): boolean {
+  return Boolean(
+    siteOrigin() &&
+      site.hosting.privacyDetailsComplete &&
+      site.legal.textsApproved &&
+      site.release.appProductionAuditComplete &&
+      site.release.publicReleaseApproved,
+  );
 }

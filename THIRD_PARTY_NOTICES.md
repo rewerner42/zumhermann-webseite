@@ -1,6 +1,6 @@
 # Drittanbieterhinweise
 
-Stand: 17. August 2026
+Stand: 18. August 2026
 
 ## Software
 
@@ -9,6 +9,7 @@ Dieses Projekt verwendet Astro und dessen über npm installierte transitive Open
 - Astro: https://github.com/withastro/astro – MIT-Lizenz
 - TypeScript: https://github.com/microsoft/TypeScript – Apache-2.0-Lizenz
 - Astro Check: https://github.com/withastro/language-tools – MIT-Lizenz
+- Wrangler: https://github.com/cloudflare/workers-sdk – MIT-/Apache-2.0-Lizenzen gemäß Paketbestand; nur als Entwicklungs- und Deploymentwerkzeug, nicht als Browsercode
 
 ## Marken- und Bildmaterial
 

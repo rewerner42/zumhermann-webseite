@@ -3,7 +3,10 @@ import FeatureCard from '../components/FeatureCard.astro';
 import SectionHeading from '../components/SectionHeading.astro';
 import StepCard from '../components/StepCard.astro';
 import StoreButtons from '../components/StoreButtons.astro';
+import { isPublicReleaseReady } from '../config/site';
 import BaseLayout from '../layouts/BaseLayout.astro';
+
+const releaseReady = isPublicReleaseReady();
 ---
 
 <BaseLayout>
@@ -197,8 +200,8 @@ import BaseLayout from '../layouts/BaseLayout.astro';
           <summary>Braucht die Website einen Cookie-Banner?</summary>
           <p>
             Nach aktuellem technischen Stand nein: Diese Website setzt keine Cookies, kein Tracking
-            und keinen Browserspeicher ein. Technisch notwendige Serverzugriffe des späteren Hosters
-            werden vor Veröffentlichung konkret dokumentiert.
+            und keinen Browserspeicher ein. Technisch notwendige Server- und Sicherheitsverarbeitung
+            beim Hoster wird in der Datenschutzerklärung konkret beschrieben.
           </p>
         </details>
       </div>
@@ -210,7 +213,13 @@ import BaseLayout from '../layouts/BaseLayout.astro';
       <div>
         <p class="eyebrow eyebrow--light">Bald im Store</p>
         <h2>Die Richtung steht schon fest.</h2>
-        <p>Die App folgt, sobald Store-Seiten und Pflichtangaben vollständig sind.</p>
+        <p>
+          {
+            releaseReady
+              ? 'Die App folgt, sobald die Store-Seiten verfügbar sind.'
+              : 'Die App folgt, sobald Store-Seiten und Pflichtangaben vollständig sind.'
+          }
+        </p>
       </div>
       <StoreButtons />
     </div>

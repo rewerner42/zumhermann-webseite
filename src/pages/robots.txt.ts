@@ -1,14 +1,9 @@
 import type { APIRoute } from 'astro';
-import { site, siteOrigin } from '../config/site';
+import { isPublicReleaseReady, siteOrigin } from '../config/site';
 
 export const GET: APIRoute = () => {
   const origin = siteOrigin();
-  const releaseReady =
-    origin &&
-    site.hosting.privacyDetailsComplete &&
-    site.legal.textsApproved &&
-    site.release.publicReleaseApproved;
-  const body = releaseReady
+  const body = isPublicReleaseReady()
     ? `User-agent: *\nAllow: /\n\nSitemap: ${origin}/sitemap.xml\n`
     : 'User-agent: *\nDisallow: /\n\n# Veröffentlichung gesperrt, bis alle Pflichtangaben und Freigaben vorliegen.\n';
 

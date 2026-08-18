@@ -1,9 +1,10 @@
 ---
 import LegalDraftNotice from '../components/LegalDraftNotice.astro';
-import { hasPlaceholder, site } from '../config/site';
+import { hasPlaceholder, isPublicReleaseReady, site } from '../config/site';
 import BaseLayout from '../layouts/BaseLayout.astro';
 
 const emailReady = !hasPlaceholder(site.owner.email);
+const releaseReady = isPublicReleaseReady();
 ---
 
 <BaseLayout
@@ -69,55 +70,67 @@ const emailReady = !hasPlaceholder(site.owner.email);
 
           <h3>Technisch notwendige Bereitstellung</h3>
           <p>
-            Wenn du diese Website aufrufst, muss der später ausgewählte Hostinganbieter technisch
-            notwendige Verbindungs- und Zugriffsdaten verarbeiten, damit die angeforderten Inhalte an
-            dein Gerät ausgeliefert, Fehler behoben und Angriffe abgewehrt werden können. Dazu können –
-            abhängig von der tatsächlichen Hostingkonfiguration – insbesondere IP-Adresse, Zeitpunkt,
+            Wenn du diese Website aufrufst, verarbeitet der unten genannte Hostinganbieter technisch
+            notwendige Verbindungs- und Zugriffsdaten, damit die angeforderten Inhalte an dein Gerät
+            ausgeliefert, Fehler behoben und Angriffe abgewehrt werden können. Dazu können – abhängig
+            von der tatsächlichen Hostingkonfiguration – insbesondere IP-Adresse, Zeitpunkt,
             angeforderte Datei, übertragene Datenmenge, Statuscode, Referrer sowie Browser- und
             Betriebssystemangaben gehören.
           </p>
           <p>
-            Soweit Werner Francis Reineke diese Verarbeitung verantwortet, ist die vorgesehene
-            Rechtsgrundlage Art. 6 Abs. 1 Buchst. f DSGVO. Das berechtigte Interesse liegt in einer
-            sicheren, stabilen und technisch funktionsfähigen Bereitstellung der Website. Vor der
-            Veröffentlichung wird geprüft und dokumentiert, welche Protokolle wirklich anfallen und ob
-            die Verarbeitung dafür erforderlich ist.
+            Soweit Werner Francis Reineke diese Verarbeitung verantwortet, ist die Rechtsgrundlage Art.
+            6 Abs. 1 Buchst. f DSGVO. Das berechtigte Interesse liegt in einer sicheren, stabilen und
+            technisch funktionsfähigen Bereitstellung der Website. Die Verarbeitung wird auf den dafür
+            erforderlichen Umfang begrenzt.
           </p>
 
-          <div class="hosting-placeholder">
-            <h3>Hostingangaben vor Veröffentlichung zu vervollständigen</h3>
+          <div class:list={['hosting-details', !releaseReady && 'hosting-details--draft']}>
+            <h3>{releaseReady ? 'Hosting und Empfänger' : 'Hostingangaben vor Veröffentlichung zu vervollständigen'}</h3>
             <dl class="contact-list">
               <div>
                 <dt>Anbieter</dt>
-                <dd class="placeholder">{site.hosting.provider}</dd>
+                <dd class:list={{ placeholder: hasPlaceholder(site.hosting.provider) }}>
+                  {site.hosting.provider}
+                </dd>
               </div>
               <div>
                 <dt>Speicherdauer oder Löschkriterien für Zugriffsprotokolle</dt>
-                <dd class="placeholder">{site.hosting.accessLogDeletionCriteria}</dd>
+                <dd class:list={{ placeholder: hasPlaceholder(site.hosting.accessLogDeletionCriteria) }}>
+                  {site.hosting.accessLogDeletionCriteria}
+                </dd>
               </div>
               <div>
                 <dt>Empfänger und Unterauftragnehmer</dt>
-                <dd class="placeholder">{site.hosting.recipientsAndProcessors}</dd>
+                <dd class:list={{ placeholder: hasPlaceholder(site.hosting.recipientsAndProcessors) }}>
+                  {site.hosting.recipientsAndProcessors}
+                </dd>
               </div>
               <div>
                 <dt>Verarbeitungsorte und mögliche Drittlandübermittlungen</dt>
-                <dd class="placeholder">{site.hosting.processingLocationsAndTransfers}</dd>
+                <dd
+                  class:list={{ placeholder: hasPlaceholder(site.hosting.processingLocationsAndTransfers) }}
+                >
+                  {site.hosting.processingLocationsAndTransfers}
+                </dd>
               </div>
             </dl>
-            <p>
-              Anbieter, Protokollumfang, Speicherdauer, Unterauftragnehmer und Drittlandtransfers werden
-              nicht geschätzt. Vor dem öffentlichen Betrieb werden sie anhand des gewählten Tarifs,
-              eines Vertrags zur Auftragsverarbeitung und der realen Konfiguration ergänzt.
-            </p>
+            {
+              !releaseReady && (
+                <p>
+                  Anbieter, Protokollumfang, Speicherdauer, Unterauftragnehmer und Drittlandtransfers
+                  werden nicht geschätzt. Vor dem öffentlichen Betrieb werden sie anhand des gewählten
+                  Tarifs, eines Vertrags zur Auftragsverarbeitung und der realen Konfiguration ergänzt.
+                </p>
+              )
+            }
           </div>
 
           <h3>Keine Trackingtechnik und kein Cookie-Banner</h3>
           <p>
             Die Website bindet keine Analyse-, Werbe-, Karten-, Video- oder Social-Media-Dienste ein.
             Sie setzt nach aktuellem technischen Stand keine Cookies und verwendet weder Local Storage
-            noch vergleichbare Browserspeicher. Daher erscheint kein Einwilligungsbanner. Vor dem
-            Hostingstart wird nochmals geprüft, ob der konkrete Anbieter oder ein aktivierter
-            Sicherheitsdienst zusätzliche Endgerätespeicherungen auslöst.
+            noch vergleichbare Browserspeicher. Daher erscheint kein Einwilligungsbanner. Serverseitige
+            Hosting- und Sicherheitsverarbeitung wird getrennt in den Hostingangaben beschrieben.
           </p>
         </section>
 
@@ -211,9 +224,11 @@ const emailReady = !hasPlaceholder(site.owner.email);
           <h3>Keine Werbung, Analyse oder eigene Nutzerverfolgung</h3>
           <p>
             Im geprüften App-Code sind keine Werbung, keine Betreiber-Analytics, kein Tracking, keine
-            Remote-API und kein Drittanbieter-Crash-Reporting eingebaut. Vor der rechtlichen Freigabe
-            wird zusätzlich das endgültige Produktionsbinary samt Netzwerkverhalten und
-            Plattformmanifesten kontrolliert.
+            Remote-API und kein Drittanbieter-Crash-Reporting eingebaut. {
+              releaseReady
+                ? 'Die Freigabe berücksichtigt zusätzlich den geprüften Produktionsstand samt Netzwerkverhalten und Plattformmanifesten.'
+                : 'Vor der rechtlichen Freigabe wird zusätzlich das endgültige Produktionsbinary samt Netzwerkverhalten und Plattformmanifesten kontrolliert.'
+            }
           </p>
 
           <h3>Berechtigungen und Löschung</h3>
@@ -259,8 +274,10 @@ const emailReady = !hasPlaceholder(site.owner.email);
           <p>
             Du hast nach Art. 77 DSGVO das Recht, dich bei einer Datenschutzaufsichtsbehörde zu
             beschweren, insbesondere an deinem üblichen Aufenthaltsort, deinem Arbeitsplatz oder am Ort
-            des vermuteten Verstoßes. Die für Werner Francis Reineke zuständige Landesbehörde wird nach
-            Ergänzung der Betreiberanschrift konkret benannt.
+            des vermuteten Verstoßes. Zuständige Aufsichtsbehörde für Werner Francis Reineke: <span
+              class:list={{ placeholder: hasPlaceholder(site.privacy.supervisoryAuthority) }}
+              >{site.privacy.supervisoryAuthority}</span
+            >.
           </p>
           <p>
             Die aktuelle DSGVO ist auf{' '}
@@ -273,10 +290,11 @@ const emailReady = !hasPlaceholder(site.owner.email);
         <section>
           <h2>7. Stand und Änderungen</h2>
           <p>
-            Stand dieses technischen Entwurfs: 17. August 2026. Vor Veröffentlichung werden die
-            Hostingkonfiguration, Pflichtkontaktangaben, Store-Links und das endgültige App-Binary
-            erneut geprüft. Wesentliche Änderungen der Datenverarbeitung werden in dieser Erklärung
-            nachvollziehbar aktualisiert.
+            {
+              releaseReady
+                ? 'Stand: 18. August 2026. Wesentliche Änderungen der Datenverarbeitung werden in dieser Erklärung nachvollziehbar aktualisiert.'
+                : 'Stand dieses technischen Entwurfs: 18. August 2026. Vor Veröffentlichung werden die Hostingkonfiguration, Pflichtkontaktangaben, Store-Links und das endgültige App-Binary erneut geprüft. Wesentliche Änderungen der Datenverarbeitung werden in dieser Erklärung nachvollziehbar aktualisiert.'
+            }
           </p>
         </section>
       </div>

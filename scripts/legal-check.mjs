@@ -74,6 +74,7 @@ const hostingProvider = stringValue('provider');
 const accessLogDeletionCriteria = stringValue('accessLogDeletionCriteria');
 const recipientsAndProcessors = stringValue('recipientsAndProcessors');
 const processingLocationsAndTransfers = stringValue('processingLocationsAndTransfers');
+const supervisoryAuthority = stringValue('supervisoryAuthority');
 
 if (!street) errors.push('Straße und Hausnummer fehlen.');
 if (!postalCity) errors.push('Postleitzahl und Ort fehlen.');
@@ -95,11 +96,17 @@ if (!recipientsAndProcessors) errors.push('Hostingempfänger und Unterauftragneh
 if (!processingLocationsAndTransfers) {
   errors.push('Hosting-Verarbeitungsorte und mögliche Drittlandtransfers sind nicht dokumentiert.');
 }
+if (!supervisoryAuthority) {
+  errors.push('Die zuständige Datenschutzaufsichtsbehörde ist nicht dokumentiert.');
+}
 if (!booleanValue('privacyDetailsComplete')) {
   errors.push('Der Hosting-Datenschutzabschnitt ist nicht als vollständig geprüft markiert.');
 }
 if (!booleanValue('textsApproved')) {
   errors.push('Impressum und Datenschutzerklärung sind nicht als rechtlich freigegeben markiert.');
+}
+if (!booleanValue('appProductionAuditComplete')) {
+  errors.push('Der Produktionsbinary-/Netzwerkaudit der App ist nicht als abgeschlossen markiert.');
 }
 if (!booleanValue('publicReleaseApproved')) {
   errors.push('Die ausdrückliche Freigabe für eine öffentliche Veröffentlichung fehlt.');

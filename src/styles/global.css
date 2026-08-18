@@ -975,15 +975,21 @@
     overflow-wrap: anywhere;
   }
 
-  .hosting-placeholder {
+  .hosting-details {
     margin-top: var(--space-5);
     padding: clamp(1.2rem, 3vw, 2rem);
-    border: 1px dashed var(--bronze);
+    border: 1px solid var(--line);
     border-radius: var(--radius-md);
+    background: rgba(255, 255, 255, 0.34);
+  }
+
+  .hosting-details--draft {
+    border-style: dashed;
+    border-color: var(--bronze);
     background: #fbf5e8;
   }
 
-  .hosting-placeholder h3 {
+  .hosting-details h3 {
     margin-top: 0;
   }
 
@@ -1229,7 +1235,7 @@
     .store-button,
     .primary-link,
     .draft-notice,
-    .hosting-placeholder {
+    .hosting-details {
       border: 1px solid CanvasText;
     }
   }
