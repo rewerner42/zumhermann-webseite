@@ -136,6 +136,18 @@ try {
 
   await request('/_headers', 404);
 
+  const robotsResponse = await request('/robots.txt', 200);
+  const robots = await robotsResponse.text();
+  if (!robots.includes('Allow: /') || robots.includes('Disallow: /')) {
+    fail('robots.txt verhindert das Lesen der noindex-Hinweise.');
+  }
+
+  const sitemapResponse = await request('/sitemap.xml', 200);
+  const sitemap = await sitemapResponse.text();
+  if (!robots.includes('Sitemap:') && /<url>\s*<loc>/i.test(sitemap)) {
+    fail('Vor öffentlicher Freigabe enthält die Sitemap bereits URLs.');
+  }
+
   const imageResponse = await request('/assets/brand-lockup.png', 200);
   if (imageResponse.headers.get('cache-control') !== 'public, max-age=0, must-revalidate') {
     fail('Markenasset: unerwartete Cache-Control-Richtlinie.');
@@ -179,6 +191,8 @@ try {
           { path: '/impressum/', status: 307, location: '/impressum' },
           { path: '/worker-audit-fehlt', status: 404, customPage: true },
           { path: '/_headers', status: 404 },
+          { path: '/robots.txt', status: 200, crawlableNoindex: true },
+          { path: '/sitemap.xml', status: 200, gatedUrls: true },
           { path: '/assets/brand-lockup.png', status: 200, cache: 'revalidate' },
           { path: '/assets/nicht-vorhanden.png', status: 404, cache: 'revalidate' },
           { path: `/_astro/${cssFile}`, status: 200, cache: 'immutable' },

@@ -2,9 +2,11 @@ import { readFile } from 'node:fs/promises';
 import process from 'node:process';
 
 const expected = {
+  accountId: '0db45adad30041a8fb85829450807027',
   workerName: 'zumhermann-webseite',
   origin: 'https://zumhermann.de',
   host: 'zumhermann.de',
+  redirectHost: 'www.zumhermann.de',
 };
 const expectedHeaderRules = [
   '/*',
@@ -47,6 +49,10 @@ if (config.name !== expected.workerName) {
   errors.push(`Worker-Name muss ${expected.workerName} sein.`);
 }
 
+if (config.account_id !== expected.accountId) {
+  errors.push(`Cloudflare-Account muss ausdrücklich auf ${expected.accountId} festgelegt sein.`);
+}
+
 if (!/^\d{4}-\d{2}-\d{2}$/.test(config.compatibility_date ?? '')) {
   errors.push('Cloudflare compatibility_date fehlt oder ist ungültig.');
 }
@@ -73,19 +79,27 @@ if (config.send_metrics !== false) {
 
 if (
   !Array.isArray(config.routes) ||
-  config.routes.length !== 1 ||
+  config.routes.length !== 2 ||
   config.routes[0]?.pattern !== expected.host ||
-  config.routes[0]?.custom_domain !== true
+  config.routes[0]?.custom_domain !== true ||
+  config.routes[1]?.pattern !== `${expected.redirectHost}/*` ||
+  config.routes[1]?.zone_name !== expected.host
 ) {
-  errors.push(`Es muss genau eine Custom Domain für ${expected.host} konfiguriert sein.`);
+  errors.push(
+    `Der Worker muss ${expected.host} als Custom Domain und ${expected.redirectHost}/* als WWW-Redirect-Route bedienen.`,
+  );
 }
 
-if (config.main) {
-  errors.push('Die statische Website darf keinen unnötigen Worker-Laufzeitcode konfigurieren.');
+if (config.main !== './src/worker.mjs') {
+  errors.push('Der einzige Worker-Einstiegspunkt muss ./src/worker.mjs sein.');
 }
 
 if (config.assets?.directory !== './dist') {
   errors.push('Cloudflare muss ausschließlich das Build-Verzeichnis ./dist ausliefern.');
+}
+
+if (config.assets?.binding !== 'ASSETS' || config.assets?.run_worker_first !== true) {
+  errors.push('Der einzige Worker muss die statischen Dateien kontrolliert über die ASSETS-Bindung ausliefern.');
 }
 
 if (config.assets?.not_found_handling !== '404-page') {
@@ -121,6 +135,33 @@ for (const [name, command] of Object.entries(expectedScripts)) {
   }
 }
 
+const worker = (await import('../src/worker.mjs')).default;
+const noAssetAccess = {
+  ASSETS: {
+    fetch() {
+      throw new Error('Der Redirect darf die Assets-Bindung nicht aufrufen.');
+    },
+  },
+};
+const wwwResponse = await worker.fetch(
+  new Request('http://www.zumhermann.de/ein/pfad?quelle=test'),
+  noAssetAccess,
+);
+if (
+  wwwResponse.status !== 301 ||
+  wwwResponse.headers.get('location') !== 'https://zumhermann.de/ein/pfad?quelle=test' ||
+  wwwResponse.headers.has('set-cookie')
+) {
+  errors.push('Der WWW-Redirect bewahrt Pfad und Query nicht korrekt oder setzt unerwartete Cookies.');
+}
+
+const assetResponse = await worker.fetch(new Request('https://zumhermann.de/'), {
+  ASSETS: { fetch: () => new Response('asset-ok', { status: 200 }) },
+});
+if (assetResponse.status !== 200 || (await assetResponse.text()) !== 'asset-ok') {
+  errors.push('Der Apex wird nicht unverändert über die statische ASSETS-Bindung ausgeliefert.');
+}
+
 if (errors.length > 0) {
   console.error('Cloudflare-Konfigurationsprüfung fehlgeschlagen:');
   for (const error of errors) {
@@ -130,5 +171,5 @@ if (errors.length > 0) {
 }
 
 console.log(
-  `Cloudflare-Konfiguration geprüft: ${expected.workerName} liefert ./dist ausschließlich über ${expected.origin} aus.`,
+  `Cloudflare-Konfiguration geprüft: ${expected.workerName} liefert ./dist über ${expected.origin} aus und leitet WWW kanonisch um.`,
 );

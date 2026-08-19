@@ -1,8 +1,8 @@
 # zumHermann Website
 
-Statische Produkt- und Supportwebsite für die App **zumHermann**. Betreiber ist persönlich **Werner Francis Reineke**. Das Projekt verwendet keine Unternehmensbezeichnung.
+Statische Produkt- und Supportwebsite für die App **zumHermann**. Betreiber ist persönlich **Werner Francis Reineke-Ryskiewicz**. Das Projekt verwendet keine Unternehmensbezeichnung.
 
-> **Veröffentlichung gesperrt:** Die Domain `zumhermann.de` steht fest, aber Betreiber-, Kontakt-, Hosting- und Freigabeangaben fehlen weiterhin. Der lokale Entwicklungsstand funktioniert bewusst mit sichtbaren Platzhaltern; `npm run legal:check` muss bis zu deren Klärung fehlschlagen.
+> **Vorab-Bereitstellung freigegeben:** Betreiber, Kontakt, VSBG-Angabe und Cloudflare-Datenschutzangaben sind bestätigt; `npm run legal:check` ist grün. Bis zum finalen App-Audit bleiben Store-Hinweise nicht klickbar und alle Seiten `noindex`.
 
 ## Stack
 
@@ -13,7 +13,7 @@ Statische Produkt- und Supportwebsite für die App **zumHermann**. Betreiber ist
 - keine extern geladenen Schriften, Medien oder Einbettungen
 - keine Cookies, kein Tracking, keine Werbung und kein Browserspeicher
 
-Die gebaute Website liegt in `dist/` und ist als Cloudflare Worker mit Static Assets vorbereitet. Es gibt keinen Worker-Laufzeitcode; Cloudflare liefert ausschließlich die statischen Dateien aus.
+Die gebaute Website liegt in `dist/` und wird von genau einem Cloudflare Worker ausgeliefert. Sein kleiner Einstiegspunkt leitet `www` kanonisch auf `https://zumhermann.de` um und reicht alle übrigen Anfragen unverändert an die statische `ASSETS`-Bindung weiter; Cloudflares Zoneneinstellung erzwingt HTTPS. Es gibt kein Backend, keine Datenspeicherung und keine externen Worker-Anfragen.
 
 ## Voraussetzungen
 
@@ -50,17 +50,17 @@ Die Veröffentlichungssperre wird separat geprüft:
 npm run legal:check
 ```
 
-Dieser Befehl ist momentan **absichtlich rot**. Für einen späteren Release führt `npm run release:build` zuerst das Rechts-/Pflichtangabengate und danach sämtliche Qualitäts-, Build-, Artefakt-, Smoke- und Dry-Run-Prüfungen aus. Nur `npm run deploy` ist als Produktionsweg vorgesehen.
+Dieser Befehl ist für die freigegebene Vorab-Bereitstellung grün. `npm run release:build` führt zuerst das Rechts-/Pflichtangabengate und danach sämtliche Qualitäts-, Build-, Artefakt-, Smoke- und Dry-Run-Prüfungen aus. Nur `npm run deploy` ist als Produktionsweg vorgesehen.
 
 ## Seiten
 
 - `/` – Produktstartseite, Funktionsweise, Funktionen, Datenschutzvertrauen, regionale Erzählung, Disclaimer und FAQ
-- `/impressum` – rechtlicher Entwurf der Anbieterkennzeichnung
+- `/impressum` – bestätigte Anbieterkennzeichnung
 - `/datenschutz` – getrennte Datenschutzhinweise für Website und mobile App
 - `/support` – Kontakt, Standort-, Kompass-, Teilen- und Löschhilfe
 - `/404.html` – benutzerfreundliche Fehlerseite
-- `/robots.txt` – blockiert Crawler, solange Hosting-, Rechts- und Veröffentlichungsfreigaben fehlen
-- `/sitemap.xml` – statische Sitemap; die echte Basis-URL wird aus der zentralen Konfiguration übernommen
+- `/robots.txt` – erlaubt das Lesen der `noindex`-Hinweise; erst nach öffentlicher Freigabe verweist es auf die Sitemap
+- `/sitemap.xml` – bleibt bis zur öffentlichen Freigabe leer; danach nutzt sie die zentrale Basis-URL
 
 ## Inhalte ändern
 
@@ -74,9 +74,9 @@ Vor einer Veröffentlichung:
 
 1. Alle tatsächlichen Angaben in dieser Datei eintragen. Nichts schätzen oder erfinden.
 2. Nicht verfügbare Store-Links nach dokumentierter Entscheidung als leere Zeichenfolge führen; die Oberfläche zeigt dann weiterhin „Demnächst erhältlich“.
-3. Verbraucherstreitbeilegung anhand der tatsächlichen Verhältnisse entscheiden. Ist kein Hinweis erforderlich, bleibt der konfigurierte Text leer und der Abschnitt wird nicht ausgegeben.
-4. Hostingdetails anhand des wirklich gebuchten Tarifs und der realen Konfiguration ergänzen.
-5. Erst nach fachlicher Prüfung `privacyDetailsComplete`, `textsApproved` und `appProductionAuditComplete` sowie nach ausdrücklicher Freigabe `publicReleaseApproved` auf `true` setzen.
+3. Die bestätigte VSBG-Angabe nur bei veränderten tatsächlichen oder rechtlichen Verhältnissen neu prüfen.
+4. Der verwendete Cloudflare-Account ist von Werner für dieses persönliche Projekt freigegeben und über die nicht geheime Account-ID fest gepinnt; Dashboardzustand und Live-Verhalten bei jedem Release erneut prüfen.
+5. `identityApproved`, `textsApproved` und `externalReviewApproved` sind bestätigt. `appProductionAuditComplete` bleibt eine getrennte App-Prüfung; `publicReleaseApproved` steuert die spätere Indexierung und öffentliche Marketingfreigabe.
 6. `npm run legal:check` und `npm run release:build` erfolgreich ausführen.
 
 Die offenen Entscheidungen und amtlichen Rechtsquellen sind in [LEGAL_TODO.md](LEGAL_TODO.md) dokumentiert.
@@ -102,8 +102,8 @@ Eine byte-identische Archivkopie liegt als `public/assets/brand-source.png` im W
 
 ## Git-Hinweis
 
-Dieses Verzeichnis ist als eigenes Repository innerhalb eines bereits vorhandenen, uncommittiert veränderten App-Repositorys angelegt. Niemals Website-Commits vom übergeordneten Repository aus erstellen. Insbesondere kein pauschales `git add .` im Verzeichnis darüber ausführen; dort könnte das eingebettete Repository versehentlich als Gitlink vorgemerkt werden.
+Dieses Verzeichnis ist ein eigenes Repository innerhalb des App-Repository-Arbeitsverzeichnisses. Der Elternordner ignoriert `/zumhermann-web/`; Website-Commits werden trotzdem ausschließlich in diesem Repository erstellt.
 
 ## Veröffentlichung
 
-Die vollständige, derzeit bewusst blockierte Anleitung für Cloudflare Workers Static Assets und die DNS-Migration von Squarespace steht in [DEPLOYMENT.md](DEPLOYMENT.md). Eine technisch erfolgreiche lokale Website ist noch keine rechtliche Veröffentlichungsfreigabe. Die vorbereiteten Texte ersetzen keine individuelle Rechtsberatung.
+Die nicht indexierte Vorabversion ist unter [zumhermann.de](https://zumhermann.de) mit genau einem Cloudflare Worker live. Der dokumentierte Ablauf und die Rollbackwerte stehen in [DEPLOYMENT.md](DEPLOYMENT.md). Die spätere App- und Indexierungsfreigabe bleibt davon getrennt. Die vorbereiteten Texte ersetzen keine individuelle Rechtsberatung.

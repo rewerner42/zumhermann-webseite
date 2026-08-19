@@ -1,10 +1,11 @@
 ---
 import LegalDraftNotice from '../components/LegalDraftNotice.astro';
-import { hasPlaceholder, isPublicReleaseReady, site } from '../config/site';
+import { hasPlaceholder, isExternalSiteReady, site } from '../config/site';
 import BaseLayout from '../layouts/BaseLayout.astro';
 
 const emailReady = !hasPlaceholder(site.owner.email);
-const releaseReady = isPublicReleaseReady();
+const releaseReady = isExternalSiteReady();
+const appAuditComplete = site.release.appProductionAuditComplete;
 ---
 
 <BaseLayout
@@ -17,8 +18,9 @@ const releaseReady = isPublicReleaseReady();
       <p class="eyebrow">Ohne Nebelkerzen</p>
       <h1>Datenschutz</h1>
       <p>
-        Was die Website und die mobile App verarbeiten – und, ebenso wichtig, was nicht bei Werner
-        Francis Reineke ankommt.
+        Was die Website und die mobile App verarbeiten – und, ebenso wichtig, was nicht bei {
+          site.owner.name
+        } ankommt.
       </p>
     </div>
   </section>
@@ -78,8 +80,8 @@ const releaseReady = isPublicReleaseReady();
             Betriebssystemangaben gehören.
           </p>
           <p>
-            Soweit Werner Francis Reineke diese Verarbeitung verantwortet, ist die Rechtsgrundlage Art.
-            6 Abs. 1 Buchst. f DSGVO. Das berechtigte Interesse liegt in einer sicheren, stabilen und
+            Soweit {site.owner.name} diese Verarbeitung verantwortet, ist die Rechtsgrundlage Art. 6
+            Abs. 1 Buchst. f DSGVO. Das berechtigte Interesse liegt in einer sicheren, stabilen und
             technisch funktionsfähigen Bereitstellung der Website. Die Verarbeitung wird auf den dafür
             erforderlichen Umfang begrenzt.
           </p>
@@ -137,7 +139,7 @@ const releaseReady = isPublicReleaseReady();
         <section id="supportanfragen">
           <h2>3. Supportanfragen und E-Mails</h2>
           <p>
-            Wenn du Werner Francis Reineke kontaktierst, werden die von dir übermittelten Angaben –
+            Wenn du {site.owner.name} kontaktierst, werden die von dir übermittelten Angaben –
             typischerweise E-Mail-Adresse, Nachrichteninhalt sowie technische Angaben, die du freiwillig
             mitteilst – verarbeitet, um die Anfrage zu beantworten und den Vorgang nachzuvollziehen.
           </p>
@@ -185,7 +187,7 @@ const releaseReady = isPublicReleaseReady();
           <p>
             Die Berechnung erfolgt lokal auf dem Gerät gegen die fest hinterlegte Position des
             Hermannsdenkmals. Standort, Kompassrichtung und daraus berechnete Werte werden vom App-Code
-            nicht an Werner Francis Reineke oder ein eigenes Backend übertragen. Es gibt kein eigenes
+            nicht an {site.owner.name} oder ein eigenes Backend übertragen. Es gibt kein eigenes
             Benutzerkonto und kein eigenes Backend.
           </p>
           <p>
@@ -193,8 +195,9 @@ const releaseReady = isPublicReleaseReady();
             aktiven Messsitzung werden sie im Arbeitsspeicher verarbeitet. Dein Betriebssystem und seine
             Standortdienste – auf Android insbesondere Google Play-Dienste Standort, auf iOS Core
             Location – können Standort- und Diagnosedaten nach ihren eigenen Einstellungen und Regeln
-            verarbeiten. Diese Plattformverarbeitung ist von der fehlenden Übertragung an Werner
-            Francis Reineke zu unterscheiden.
+            verarbeiten. Diese Plattformverarbeitung ist von der fehlenden Übertragung an {
+              site.owner.name
+            } zu unterscheiden.
           </p>
 
           <h3>Lokale App-Einstellungen</h3>
@@ -225,9 +228,9 @@ const releaseReady = isPublicReleaseReady();
           <p>
             Im geprüften App-Code sind keine Werbung, keine Betreiber-Analytics, kein Tracking, keine
             Remote-API und kein Drittanbieter-Crash-Reporting eingebaut. {
-              releaseReady
+              appAuditComplete
                 ? 'Die Freigabe berücksichtigt zusätzlich den geprüften Produktionsstand samt Netzwerkverhalten und Plattformmanifesten.'
-                : 'Vor der rechtlichen Freigabe wird zusätzlich das endgültige Produktionsbinary samt Netzwerkverhalten und Plattformmanifesten kontrolliert.'
+                : 'Der abschließende Audit des Produktionsbinarys samt Netzwerkverhalten und Plattformmanifesten steht noch aus.'
             }
           </p>
 
@@ -274,7 +277,7 @@ const releaseReady = isPublicReleaseReady();
           <p>
             Du hast nach Art. 77 DSGVO das Recht, dich bei einer Datenschutzaufsichtsbehörde zu
             beschweren, insbesondere an deinem üblichen Aufenthaltsort, deinem Arbeitsplatz oder am Ort
-            des vermuteten Verstoßes. Zuständige Aufsichtsbehörde für Werner Francis Reineke: <span
+            des vermuteten Verstoßes. Zuständige Aufsichtsbehörde für {site.owner.name}: <span
               class:list={{ placeholder: hasPlaceholder(site.privacy.supervisoryAuthority) }}
               >{site.privacy.supervisoryAuthority}</span
             >.

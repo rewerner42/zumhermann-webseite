@@ -99,17 +99,23 @@ if (!processingLocationsAndTransfers) {
 if (!supervisoryAuthority) {
   errors.push('Die zuständige Datenschutzaufsichtsbehörde ist nicht dokumentiert.');
 }
+if (!booleanValue('identityApproved')) {
+  errors.push('Die exakte rechtliche Identität des persönlichen Betreibers ist nicht bestätigt.');
+}
 if (!booleanValue('privacyDetailsComplete')) {
   errors.push('Der Hosting-Datenschutzabschnitt ist nicht als vollständig geprüft markiert.');
 }
 if (!booleanValue('textsApproved')) {
   errors.push('Impressum und Datenschutzerklärung sind nicht als rechtlich freigegeben markiert.');
 }
-if (!booleanValue('appProductionAuditComplete')) {
-  errors.push('Der Produktionsbinary-/Netzwerkaudit der App ist nicht als abgeschlossen markiert.');
+if (!booleanValue('externalReviewApproved')) {
+  errors.push('Die externe Bereitstellung der rechtlich geprüften Website ist nicht freigegeben.');
 }
-if (!booleanValue('publicReleaseApproved')) {
-  errors.push('Die ausdrückliche Freigabe für eine öffentliche Veröffentlichung fehlt.');
+
+const appProductionAuditComplete = booleanValue('appProductionAuditComplete');
+const publicReleaseApproved = booleanValue('publicReleaseApproved');
+if (publicReleaseApproved && !appProductionAuditComplete) {
+  errors.push('Die öffentliche Marketing-/Indexierungsfreigabe setzt den finalen App-Audit voraus.');
 }
 
 for (const page of ['impressum.astro', 'datenschutz.astro', 'support.astro']) {
@@ -126,4 +132,4 @@ if (errors.length > 0) {
   process.exit(1);
 }
 
-console.log('Rechts- und Pflichtangabencheck bestanden. Eine Veröffentlichung ist technisch freigegeben.');
+console.log('Rechts- und Pflichtangabencheck bestanden. Die externe Website-Bereitstellung ist freigegeben.');

@@ -1,8 +1,8 @@
 # Website-Handoff – zumHermann
 
-Stand: 18. August 2026
+Stand: 19. August 2026
 Projektpfad: `/Users/werner/Documents/zumHermann/zumhermann-web`  
-Veröffentlichungsstatus: **lokal vollständig gebaut, öffentliche Veröffentlichung gesperrt**
+Veröffentlichungsstatus: **nicht indexierte Vorabversion live unter `https://zumhermann.de`**
 
 ## Was gebaut wurde
 
@@ -13,7 +13,7 @@ Veröffentlichungsstatus: **lokal vollständig gebaut, öffentliche Veröffentli
 - responsive Gestaltung für kleine und große Smartphones, Tablets und Desktop;
 - zentrale Konfiguration in `src/config/site.ts`;
 - Sitemap, robots.txt, Favicons, App-Icon, Open Graph, Twitter-Metadaten und `SoftwareApplication`-Strukturdaten;
-- asset-only Cloudflare Worker mit Static Assets, Custom 404, slashlosem Routing und Sicherheitsheadern;
+- genau ein Cloudflare Worker mit minimalem `www`-Redirect, Cloudflare-HTTPS-Erzwingung, Static Assets, Custom 404, slashlosem Routing und Sicherheitsheadern;
 - öffentliche `workers.dev`- und Preview-URLs sowie Workers Observability und Logpush deaktiviert;
 - kein Backend, kein Tracking, keine Werbung, kein Cookie-Banner und kein eigenes Client-JavaScript;
 - Rechts-/Pflichtangabengate, Inhaltsprüfung, Build-Ausgabeprüfung und GitHub-Actions-Workflows.
@@ -41,7 +41,7 @@ Kein Asset wurde neu gezeichnet oder durch eine Ersatzillustration ersetzt. Das 
 
 - Foreground-Standort und Geräteheading werden für Entfernung und Richtung genutzt.
 - Berechnung erfolgt lokal gegen die feste Denkmalposition.
-- Keine Übertragung von Standort oder Heading an Werner Francis Reineke oder ein eigenes Backend im geprüften App-Code.
+- Keine Übertragung von Standort oder Heading an den konfigurierten persönlichen Betreiber oder ein eigenes Backend im geprüften App-Code.
 - Kein Konto, keine Werbung, keine Betreiber-Analytics, kein Tracking, keine Remote-API und kein Drittanbieter-Crash-SDK im geprüften Stand.
 - Dauerhaft gespeichert wird nur der lokale Onboardingstatus.
 - Share-Grafik enthält gerundete Distanz und Richtungsgenauigkeit, aber keine exakte Position, Koordinaten, Ortsangabe oder Zeit.
@@ -54,7 +54,7 @@ Offen bleibt vor dem App-Release der Audit des finalen Produktionsbinarys, einsc
 
 Erfolgreich:
 
-- Astro-/TypeScript-Prüfung: 25 Dateien, 0 Fehler, 0 Warnungen, 0 Hinweise;
+- Astro-/TypeScript-Prüfung: 29 Dateien, 0 Fehler, 0 Warnungen, 0 Hinweise;
 - Inhaltsprüfung: Pflichtseiten, interne Links, Sprungziele und Bild-Alternativtexte;
 - statischer Astro-Build: 5 HTML-Seiten plus robots.txt und Sitemap;
 - Post-Build-Prüfung: interne Links, Assets, Alternativtexte und Pflichtdateien;
@@ -66,64 +66,49 @@ Erfolgreich:
 - freundliche 404-Ausgabe;
 - exakte Asset-Hashes und Bilddimensionen geprüft;
 - unabhängiger Vorbuild-Audit durch zwei Prüfer: technisch freigegeben, alle Befunde behoben;
-- Worker-Artefaktprüfung: 15 Assets plus eine `_headers`-Metadatei, 4.789.667 Byte, größte Datei
+- Worker-Artefaktprüfung: 15 Assets plus eine `_headers`-Metadatei, 4.788.923 Byte, größte Datei
   1.423.624 Byte, vollständiges SHA-256-Manifest;
 - lokaler Wrangler-Smoke-Test: acht Headerregeln, slashlose Routen, Weiterleitung, eigene 404,
   Sicherheits-/Cacheheader und fehlende `Set-Cookie`-Header geprüft;
-- Wrangler-Dry-Run: erwarteter 313-Byte-No-op-Worker ohne Imports, Bindings oder eigenen Laufzeitcode;
+- Wrangler-Dry-Run: ein einzelner 0,47-KiB-Worker mit ausschließlich der statischen `ASSETS`-Bindung;
 - unabhängiger Post-Build-Audit durch zwei Prüfer: technisch GO, keine zusätzlichen Befunde;
 - `npm audit` und `npm audit --omit=dev`: 0 bekannte Schwachstellen.
 
 Die maschinenlesbaren Hash-, Inventar-, Smoke- und Dry-Run-Nachweise liegen lokal unter `.wrangler/`
 und werden vom manuellen Release-Workflow zusammen mit `dist/` archiviert.
 
-Erwartet fehlgeschlagen:
+Erfolgreich abgeschlossen:
 
-- `npm run legal:check`, weil echte Pflichtangaben und Freigaben fehlen. Dies ist die beabsichtigte Veröffentlichungssperre.
+- `npm run legal:check`, vollständiges `npm run release:build` und Produktionsdeploy;
+- Live-Status 200 für Startseite, Impressum, Datenschutz und Support sowie 404 für unbekannte Pfade und `/_headers`;
+- HTTPS-Erzwingung, kanonischer `www`-Redirect mit Pfad/Query, gültiges Zertifikat und fehlende `Set-Cookie`-Header;
+- Worker-Version `ac6f004e-0f58-4348-bce1-b97e4a9ee651`.
 
 ## Offene Pflichtangaben
 
 Exakt offen sind:
 
-- Straße und Hausnummer;
-- Postleitzahl und Ort;
-- Support-/Kontakt-E-Mail;
-- weitere schnelle und unmittelbare Kontaktmöglichkeit;
-- tatsächlicher Hostinganbieter;
-- Hosting-Logumfang und Löschkriterien;
-- Hostingempfänger und Unterauftragnehmer;
-- Hosting-Verarbeitungsorte und mögliche Drittlandtransfers;
-- zuständige Datenschutzaufsichtsbehörde;
-- Cloudflare-Vertragspartner, Zonenplan, DPA/AVV und Dashboardaudit optionaler Analyse-, Sicherheits-,
-  Cookie- und Loggingfunktionen;
-- verlustfreie DNS-Migration von Squarespace zu Cloudflare einschließlich SPF, `www`-Weiterleitung und
-  HTTPS-Erzwingung;
+- externer Empfangs- und Versandtest für `tach@zumhermann.de`; MX, SPF, DKIM und DMARC sind autoritativ korrekt;
 - gegebenenfalls Umsatzsteuer-Identifikationsnummer oder Wirtschafts-Identifikationsnummer, sofern vorhanden und rechtlich zu veröffentlichen;
-- VSBG-Entscheidung anhand Unternehmerstatus, Beschäftigtenzahl, Bindung und Bereitschaft;
-- Apple-App-Store-URL;
-- Google-Play-URL;
+- Apple-App-Store-URL, sobald die App dort verfügbar ist;
+- Google-Play-URL, sobald die App dort verfügbar ist;
 - finale Produktionsbinary-/Netzwerkprüfung der App;
-- dokumentierte Bestätigung dieser Prüfung über `release.appProductionAuditComplete`;
-- individuelle rechtliche Freigabe;
-- ausdrückliche öffentliche Veröffentlichungsfreigabe.
+- dokumentierte Bestätigung der finalen App-Prüfung über `release.appProductionAuditComplete`; diese ist von der vorher möglichen Freigabe der rechtlich vollständigen, nicht indexierten Website getrennt;
+- ausdrückliche öffentliche App-/Indexierungsfreigabe.
 
 Eine persönliche Steuernummer darf nicht veröffentlicht oder angefordert werden.
 
 ## Schritte zur Veröffentlichung
 
-1. Alle Tatsachen und Entscheidungen aus `LEGAL_TODO.md` klären.
-2. Zentrale Werte in `src/config/site.ts` eintragen; keine Inhalte in einzelnen Seiten duplizieren.
-3. Finales App-Binary und Plattformmanifeste prüfen, Store-Datenschutzangaben abgleichen.
-4. Impressum und Datenschutzerklärung individuell rechtlich prüfen lassen.
-5. Freigabe-Flags erst nach tatsächlicher Prüfung und ausdrücklicher Veröffentlichungserlaubnis setzen.
-6. `npm ci`, `npm run legal:check` und `npm run release:build` erfolgreich ausführen.
-7. Squarespace-DNS nach `DEPLOYMENT.md` vollständig sichern und die Zone zu Cloudflare delegieren.
-8. Erst dann `npm run deploy` ausführen.
-9. Öffentliches Ergebnis erneut technisch, visuell und datenschutzseitig abnehmen.
+1. Proton-Empfang und -Versand einmal aus einem unabhängigen Postfach praktisch testen.
+2. Das finale App-Binary und die Plattformmanifeste prüfen und `appProductionAuditComplete` setzen.
+3. Echte Store-URLs zentral eintragen, sobald sie vorliegen.
+4. Nach Store-Bereitschaft und separater Marketingfreigabe `publicReleaseApproved` setzen und erneut bereitstellen.
+5. Das dann indexierbare Ergebnis nochmals technisch, visuell und datenschutzseitig abnehmen.
 
 ## Git und GitHub-Repository
 
-Das Websiteverzeichnis ist ein eigenständiges Git-Repository auf `main`. Der SSH-Remote ist
+Das Websiteverzeichnis ist ein eigenständiges Git-Repository mit `main` als Standardbranch. Der SSH-Remote ist
 `git@github.com:rewerner42/zumhermann-webseite.git`; der zuvor vorhandene README-Initialstand wurde
 ohne Force-Push in die Websitehistorie aufgenommen. Änderungen am übergeordneten App-Repository sind
 nicht Bestandteil der Website-Commits.
@@ -131,9 +116,9 @@ nicht Bestandteil der Website-Commits.
 Die Repository-Seite ist derzeit ohne GitHub-Anmeldung mit HTTP 200 erreichbar und damit öffentlich.
 Eine Änderung der GitHub-Sichtbarkeit wurde für diesen Worker-Auftrag weder angefordert noch vorgenommen.
 
-Wrangler 4.123.0 ist lokal per OAuth angemeldet. Im aktiven Cloudflare-Account existiert noch kein
-Worker `zumhermann-webseite`; der erste erfolgreiche Produktionsdeploy wäre daher eine Neuanlage und
-ein echter Domain-Cutover. Zugangsdaten, Tokens und private Schlüssel werden weder im Repository noch
+Werner hat die Nutzung des aktiven Cloudflare-Accounts für dieses persönliche Projekt freigegeben.
+Genau ein zumHermann-Worker namens `zumhermann-webseite` ist live; Apex-Custom-Domain und `www`-Route
+zeigen auf dasselbe Script. Zugangsdaten, Tokens und private Schlüssel werden weder im Repository noch
 in dieser Dokumentation gespeichert.
 
 ## Spätere Pflege
