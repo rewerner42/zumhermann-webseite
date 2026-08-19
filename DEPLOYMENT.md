@@ -58,7 +58,7 @@ Die DNS-Zone ist zu Cloudflare delegiert und der Cutover ist abgeschlossen:
 
 - autoritative Nameserver: `bart.ns.cloudflare.com` und `brianna.ns.cloudflare.com`;
 - genau ein Worker `zumhermann-webseite` bedient die Apex-Custom-Domain und die `www`-Route;
-- Worker-Version: `ac6f004e-0f58-4348-bce1-b97e4a9ee651`;
+- Worker-Version: `afae326d-c411-4e4c-9790-a0c0533f2f8e`;
 - der Apex wird über Cloudflares verwalteten Custom-Domain-DNS ausgeliefert;
 - der proxied `www`-CNAME zu `ext-sq.squarespace.com` bleibt als Rollbackziel bestehen, wird aber von
   der Worker-Route abgefangen und über denselben Worker ausgeliefert;
