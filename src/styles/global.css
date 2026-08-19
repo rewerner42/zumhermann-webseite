@@ -1032,6 +1032,50 @@
 }
 
 @layer utilities {
+  @media (min-width: 58.01rem) and (max-height: 68rem) {
+    .header-inner {
+      min-height: 4.25rem;
+    }
+
+    .brand-home {
+      width: 8rem;
+    }
+
+    .hero,
+    .hero-grid {
+      min-height: calc(100vh - 4.25rem);
+      min-height: calc(100svh - 4.25rem);
+    }
+
+    .hero-grid {
+      padding-block: clamp(1.5rem, 3.5vh, 2.5rem) clamp(4.5rem, 8vh, 5.5rem);
+    }
+
+    .hero h1 {
+      max-width: 14ch;
+      font-size: clamp(3.25rem, 6.5vh, 4.25rem);
+    }
+
+    .hero-lead {
+      margin-top: 1rem;
+      font-size: 1.15rem;
+      line-height: 1.45;
+    }
+
+    .hero .store-group {
+      margin-top: 1.25rem;
+    }
+
+    .hero .store-button {
+      min-height: 3.25rem;
+      padding-block: 0.5rem;
+    }
+
+    .hero-note {
+      margin-top: 0.5rem;
+    }
+  }
+
   @media (max-width: 58rem) {
     .hero-grid {
       grid-template-columns: 1fr;
