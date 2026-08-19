@@ -1,7 +1,7 @@
 # Deployment als Cloudflare Worker – vorbereitet, derzeit gesperrt
 
-Stand: 18. August 2026
-Ziel: `https://zumhermann.de` über Cloudflare Workers Static Assets
+Stand: 19. August 2026
+Ziel: `https://zumhermann.de` über Cloudflare Workers Static Assets; `www.zumhermann.de` leitet dauerhaft auf den kanonischen Apex weiter.
 
 Die Website ist als asset-only Worker vorbereitet: Cloudflare liefert den statischen Inhalt aus
 `dist/` direkt aus, ohne eigenen Worker-Laufzeitcode, Backend, Datenbank oder Secrets. Die verbindliche
@@ -17,7 +17,7 @@ Konfiguration liegt in `wrangler.jsonc`. **Eine öffentliche Bereitstellung blei
 - Es gibt keinen `main`-Entrypoint und keine Bindings; statische Treffer rufen keinen Worker-Code auf.
 - `not_found_handling: "404-page"` liefert die eigene Fehlerseite mit HTTP 404.
 - `html_handling: "drop-trailing-slash"` entspricht den slashlosen Astro-URLs.
-- Die einzige konfigurierte Custom Domain ist `zumhermann.de`.
+- Die einzige Worker-Custom-Domain ist `zumhermann.de`; `www` wird per Cloudflare Single Redirect mit Pfad und Query-String auf den Apex geleitet.
 - `_headers` setzt CSP, Frame-, Referrer-, MIME- und Permissions-Schutz sowie kontrolliertes Caching.
 - Cloudflare Web Analytics, Zaraz, Rocket Loader, Apps, Turnstile/Access und cookie-setzende Bot- oder
   Challengefunktionen werden nicht über dieses Repository gesteuert und müssen im Dashboard geprüft
@@ -35,47 +35,49 @@ Vor jedem echten `wrangler deploy` müssen alle Punkte erfüllt sein:
 6. DPA/AVV, Empfänger, Unterauftragnehmer, Verarbeitungsorte und Drittlandgarantien dokumentiert;
 7. Dashboard-Audit der Analytics-, Zaraz-, WAF-, Bot-, Challenge-, Rate-Limit-, Logpush- und
    Data-Localization-Einstellungen;
-8. finaler App-Produktionsbinary-/Netzwerkaudit und erst danach
-   `release.appProductionAuditComplete: true`;
-9. rechtliche Freigabe von Impressum und Datenschutzerklärung;
-10. ausdrückliche Veröffentlichungsfreigabe von Werner Francis Reineke;
-11. `npm run legal:check` und `npm run release:build` erfolgreich.
+8. rechtliche Freigabe von Impressum und Datenschutzerklärung;
+9. ausdrückliche Freigabe der externen Website-Bereitstellung über
+   `release.externalReviewApproved: true`;
+10. `npm run legal:check` und `npm run release:build` erfolgreich.
+
+Die Website darf damit zunächst wahrheitsgemäß, nicht indexiert und mit nicht klickbaren Store-Hinweisen bereitgestellt werden. Der finale App-Produktionsbinary-/Netzwerkaudit (`release.appProductionAuditComplete`) und die öffentliche Marketing-/Indexierungsfreigabe (`release.publicReleaseApproved`) folgen getrennt vor dem App-Launch.
 
 Der Befehl `npm run deploy` führt das vollständige Release-Gate automatisch aus und kann es nicht
 überspringen. Ein direktes `wrangler deploy` ist kein freigegebener Produktionsweg.
 
 ## Aktueller Cloudflare- und DNS-Status
 
-Am 18. August 2026 wurde Wrangler 4.123.0 erfolgreich per OAuth geprüft. Der aktive Account darf
-Workers verwalten; ein Worker `zumhermann-webseite` existiert dort noch nicht.
+Am 19. August 2026 wurde Wrangler 4.123.0 per OAuth geprüft. Der aktive Account darf Workers
+verwalten, ist aber noch als **Reineke Technik GmbH** bezeichnet und verwendet
+`wf.reineke@reineke-technik.de`. Da zumHermann Werner persönlich gehört, darf erst nach bestätigter
+Umstellung auf den persönlichen Cloudflare-Kunden oder nach Auswahl eines persönlichen Accounts
+deployt werden. Anschließend wird dessen nicht geheime Account-ID in `wrangler.jsonc` fest gepinnt.
 
-Die öffentliche DNS-Zone ist jedoch noch nicht zu Cloudflare delegiert:
+Die DNS-Zone ist bereits zu Cloudflare delegiert:
 
-- Nameserver: `nse1` bis `nse4.squarespacedns.com`;
-- Apex: vier Squarespace-A-Records;
-- `www`: CNAME `ext-sq.squarespace.com`;
-- vorhandener Apex-TXT-Record: `v=spf1 -all`;
-- Apex und `www` zeigen derzeit getrennte Squarespace-„Coming Soon“-Seiten.
+- autoritative Nameserver: `bart.ns.cloudflare.com` und `brianna.ns.cloudflare.com`;
+- Apex und `www` laufen durch Cloudflares Proxy, liefern aktuell aber noch die Squarespace-Seite samt
+  `crumb`-Cookie;
+- HTTP wird aktuell noch nicht auf HTTPS umgeleitet;
+- TXT vorhanden: Proton-Verifizierung und `v=spf1 -all`;
+- autoritativ waren keine MX- und keine DS-Records vorhanden.
 
 Vor dem Custom-Domain-Deployment:
 
-1. alle DNS-Einträge im Squarespace-Konto exportieren oder vollständig dokumentieren;
-2. unmittelbar vor der Umstellung DNSSEC-/DS-Status beim Registrar erneut prüfen;
-3. `zumhermann.de` im richtigen Cloudflare-Account als Zone hinzufügen;
-4. mindestens den vorhandenen SPF-TXT-Record unverändert übernehmen und alle weiteren Records gegen
-   den Export prüfen;
-5. die von Cloudflare genannten autoritativen Nameserver beim Registrar/Squarespace setzen;
-6. warten, bis die Cloudflare-Zone aktiv ist;
-7. bestehende Squarespace-A-Records am Apex erst entfernen, wenn der Worker-Cutover vorbereitet ist;
-8. den Squarespace-CNAME für `www` durch einen proxied A-Record auf die reservierte Adresse
-   `192.0.2.0` (alternativ proxied AAAA auf `100::`) ersetzen und in Cloudflare eine Redirect Rule von
-   `https://www.zumhermann.de/*` auf `https://zumhermann.de/${1}` mit Status 301 und aktivierter
-   Übernahme des Query-Strings einrichten;
-9. „Always Use HTTPS“ für die Zone aktivieren. Die CSP-Direktive `upgrade-insecure-requests` ersetzt
-   keine Weiterleitung der obersten HTTP-Anfrage.
+1. Cloudflare-Account/Kundenidentität auf Werner persönlich klären und dessen Account-ID fest pinnen;
+2. vollständigen aktuellen DNS- und Dashboardzustand exportieren beziehungsweise dokumentieren;
+3. Proton-MX-, SPF- und DKIM-Einträge anhand der tatsächlichen Mailkonfiguration reparieren und
+   `tach@zumhermann.de` aus einem unabhängigen externen Postfach testen;
+4. den vorhandenen Squarespace-Zustand für Apex und `www` als ersten Rollback dokumentieren;
+5. für `www` einen proxied Platzhalter-A-Record auf `192.0.2.0` und eine Cloudflare Single Redirect
+   Rule von `https://www.zumhermann.de/*` nach `https://zumhermann.de/${1}` mit Status 301,
+   Pfadübernahme und erhaltenem Query-String vorbereiten;
+6. „Always Use HTTPS“ für die Zone aktivieren. Die CSP-Direktive `upgrade-insecure-requests` ersetzt
+   keine Weiterleitung der obersten HTTP-Anfrage;
+7. erst danach `npm run deploy` für die Apex-Custom-Domain ausführen.
 
-Cloudflare Custom Domains erfordern eine aktive Cloudflare-Zone. Der Deploy darf nicht gestartet
-werden, solange die Nameserverumstellung, der DNS-Abgleich oder die Pflichtangaben offen sind.
+Der Deploy darf nicht gestartet werden, solange Kundenidentität, Mail-DNS, Pflichtangaben oder
+Dashboardzustand offen sind.
 
 ## Lokale technische Prüfung
 
@@ -123,7 +125,8 @@ Repository enthält keine Zugangsdaten; CI würde zusätzlich einen eng begrenzt
 - `/_headers` muss HTTP 404 liefern;
 - `www.zumhermann.de` muss einmalig auf den passenden Apex-Pfad weiterleiten;
 - Zertifikat, Canonicals, Open Graph, Sitemap und `robots.txt` müssen exakt `zumhermann.de` nutzen;
-- Pflichtseiten dürfen keine Platzhalter, Entwurfsbanner oder `noindex` enthalten; die 404-Seite schon;
+- Bei externer Vorab-Bereitstellung dürfen Pflichtseiten keine Platzhalter oder Entwurfsbanner enthalten; `noindex` muss bis zum finalen App-Audit und zur öffentlichen Freigabe bestehen bleiben.
+- Beim öffentlichen App-Launch darf `noindex` nur auf der 404-Seite verbleiben;
 - Sicherheitsheader, MIME-Typen, ETags und 304-Antworten kontrollieren;
 - keine `Set-Cookie`-Header, externen Ressourcen oder Browser-Speicherzugriffe;
 - Cloudflare-Dashboardzustand gegen die freigegebenen Datenschutzangaben dokumentieren;

@@ -1,28 +1,28 @@
 # Offene Rechts- und Pflichtangaben
 
-Stand: 18. August 2026
+Stand: 19. August 2026
 Status: **Veröffentlichung gesperrt**
 
 Die Website ist technisch und redaktionell als Entwurf vorbereitet. Dieses Dokument ist keine individuelle Rechtsberatung. Tatsachen, Vertragssituation und endgültige Texte müssen vor dem öffentlichen Betrieb geprüft werden.
 
 ## 1. Betreiber- und Kontaktangaben
 
-In `src/config/site.ts` fehlen:
+In `src/config/site.ts` bestätigt und eingetragen:
 
-- `[[STRASSE_HAUSNUMMER]]`
-- `[[PLZ_ORT]]`
-- `[[E_MAIL]]`
-- `[[WEITERE_KONTAKTMÖGLICHKEIT]]`
+- Werner Francis Reineke-Ryskiewicz;
+- Geseker Str. 26, 33154 Salzkotten;
+- `tach@zumhermann.de`;
+- Telefon 05258 987282.
 
-Zu erledigen:
+Noch zu erledigen:
 
-- ladungsfähige Anschrift von Werner Francis Reineke eintragen;
-- veröffentlichungsfähige Support-/Kontakt-E-Mail festlegen;
-- einen tatsächlich erreichbaren Weg für schnelle, unmittelbare und effiziente Kommunikation festlegen. Eine Telefonnummer ist nicht zwingend, aber eine bloß angekündigte oder technisch nicht vorhandene Kontaktmöglichkeit genügt nicht;
+- Proton-Mail-DNS reparieren beziehungsweise verifizieren: Der autoritative DNS-Audit fand trotz
+  Proton-Verifizierungs-TXT keinen MX-Eintrag und `v=spf1 -all`; danach E-Mail aus einem unabhängigen
+  externen Postfach erneut testen;
 - prüfen, ob eine Umsatzsteuer-Identifikationsnummer oder Wirtschafts-Identifikationsnummer besteht und nach der konkreten Anwendbarkeit von § 5 DDG veröffentlicht werden muss;
 - keine persönliche Steuernummer anfordern oder veröffentlichen;
 - keine Rechtsform, Registerdaten, Aufsichts- oder Berufsangaben ergänzen, solange sie nicht tatsächlich einschlägig sind;
-- ausschließlich Werner Francis Reineke als persönlichen Betreiber nennen und keine Unternehmensbezeichnung verwenden.
+- ausschließlich den bestätigten persönlichen Betreiber nennen und keine Unternehmensbezeichnung verwenden.
 
 Amtliche Grundlagen:
 
@@ -34,17 +34,17 @@ Amtliche Grundlagen:
 
 ## 2. Domain, Hosting und Website-Datenschutz
 
-In `src/config/site.ts` fehlen:
+In `src/config/site.ts` sind anhand der aktuellen offiziellen Cloudflare-Unterlagen vorbereitet:
 
-- `[[HOSTINGANBIETER]]`
-- `[[HOSTING_LOESCHKRITERIEN]]`
-- `[[HOSTING_EMPFÄNGER_UND_UNTERAUFTRAGNEHMER]]`
-- `[[HOSTING_VERARBEITUNGSORTE_UND_DRITTLANDTRANSFERS]]`
-- `[[DATENSCHUTZAUFSICHTSBEHÖRDE]]`
+- Cloudflare, Inc. und Cloudflare Workers Static Assets als Anbieter;
+- Löschkriterien nach dem Cloudflare-DPA bei deaktivierten eigenen Workers Logs;
+- Empfänger-/Unterauftragnehmer- und globale Verarbeitungs-/Transferbeschreibung;
+- LDI NRW als zuständige Datenschutzaufsichtsbehörde.
 
-Die Produktionsdomain ist inzwischen als `https://zumhermann.de` bestätigt. Als technisches Produkt
-ist Cloudflare Workers Static Assets ausgewählt; die konkrete Vertragspartei, der Zonenplan und die
-tatsächlichen Dashboardfunktionen sind damit noch nicht belegt.
+Die Produktionsdomain ist als `https://zumhermann.de` bestätigt und bereits zu Cloudflare delegiert.
+Offen bleibt die Kundenidentität: Wrangler ist derzeit bei einem Cloudflare-Account mit der
+Bezeichnung Reineke Technik GmbH angemeldet. Vor dem persönlichen Release muss der Account auf Werner
+persönlich umgestellt oder ein persönlicher Account gewählt und dessen Account-ID fest gepinnt werden.
 
 Nach Auswahl des tatsächlichen Hosters anhand des gebuchten Tarifs und der realen Konfiguration prüfen:
 
@@ -71,7 +71,8 @@ Für die geplante Cloudflare-Konfiguration zusätzlich dokumentieren:
 - aktuelle Cloudflare-Unterauftragnehmer und Transfergarantien. Ohne belegte Enterprise-
   Lokalisierungsprodukte nicht behaupten, die Verarbeitung finde ausschließlich in der EU statt.
 
-Erst danach `hosting.privacyDetailsComplete` auf `true` setzen.
+Erst nach Klärung der persönlichen Kundenidentität, des Self-Serve-Vertrags und des Dashboardzustands
+`hosting.privacyDetailsComplete` auf `true` setzen.
 
 Amtliche Grundlagen:
 
@@ -80,9 +81,13 @@ Amtliche Grundlagen:
 - [§ 40 BDSG – Aufsichtsbehörden der Länder](https://www.gesetze-im-internet.de/bdsg_2018/__40.html)
 - [EuGH, C-582/14 – dynamische IP-Adressen](https://eur-lex.europa.eu/legal-content/DE/TXT/?uri=CELEX%3A62014CJ0582)
 - [Cloudflare Customer DPA](https://www.cloudflare.com/cloudflare-customer-dpa/)
+- [Cloudflare Self-Serve-Vertrag](https://www.cloudflare.com/de-de/terms/)
 - [Cloudflare-Unterauftragnehmer](https://www.cloudflare.com/gdpr/subprocessors/cloudflare-services/)
+- [Cloudflare-Datenschutzerklärung](https://www.cloudflare.com/privacypolicy/)
+- [Cloudflare-GDPR-/Transferinformationen](https://www.cloudflare.com/trust-hub/gdpr/)
 - [Cloudflare Security Analytics](https://developers.cloudflare.com/waf/analytics/security-analytics/)
 - [Cloudflare-Cookies](https://developers.cloudflare.com/fundamentals/reference/policies-compliances/cloudflare-cookies/)
+- [LDI NRW – Kontakt](https://www.ldi.nrw.de/kontakt)
 
 ## 3. Verbraucherstreitbeilegung
 
@@ -92,7 +97,7 @@ Offener Platzhalter:
 
 Vor Veröffentlichung feststellen und dokumentieren:
 
-1. Handelt Werner Francis Reineke bei Angebot und Vertrieb der App als Unternehmer im Sinne des § 14 BGB?
+1. Handelt der persönliche Betreiber bei Angebot und Vertrieb der App als Unternehmer im Sinne des § 14 BGB?
 2. Wie viele Personen waren am 31. Dezember des Vorjahres beschäftigt? Für eine Veröffentlichung im Jahr 2026 ist grundsätzlich der 31. Dezember 2025 maßgeblich.
 3. Besteht eine gesetzliche, satzungsmäßige oder vertragliche Teilnahmeverpflichtung?
 4. Enthalten AGB oder andere Erklärungen eine Teilnahmezusage?
@@ -123,7 +128,7 @@ Die neue [Richtlinie (EU) 2025/2647](https://eur-lex.europa.eu/eli/dir/2025/2647
 
 ## 5. App-Datenschutz vor finaler Freigabe
 
-Der aktuelle Code-Audit stützt die Websiteaussagen: lokale Entfernung/Peilung, keine Übertragung von Standort und Heading an Werner Francis Reineke oder ein eigenes Backend, nur lokaler Onboardingstatus, systemeigenes Teilen und keine exakte Nutzerposition in der Share-Grafik.
+Der aktuelle Code-Audit stützt die Websiteaussagen: lokale Entfernung/Peilung, keine Übertragung von Standort und Heading an den konfigurierten persönlichen Betreiber oder ein eigenes Backend, nur lokaler Onboardingstatus, systemeigenes Teilen und keine exakte Nutzerposition in der Share-Grafik.
 
 Vor der finalen Rechtsfreigabe trotzdem anhand des Produktionsbinarys prüfen:
 
@@ -141,22 +146,21 @@ Die Datenschutzerklärung sagt deshalb bewusst nicht pauschal, dass keinerlei Pl
 
 ## 6. Store- und Freigabeangaben
 
-Offene Platzhalter:
+Die Store-URLs sind bis zur tatsächlichen Veröffentlichung bewusst leer. Die Oberfläche zeigt deshalb nicht klickbare Hinweise `Demnächst erhältlich`. Später dürfen ausschließlich die echten HTTPS-URLs eingetragen werden.
 
-- `[[APPLE_APP_STORE_URL]]`
-- `[[GOOGLE_PLAY_URL]]`
+Für die rechtlich vollständige, noch nicht indexierte Website erforderlich:
 
-Solange es keine echten URLs gibt, bleiben die Store-Hinweise nicht klickbar. Vor einem öffentlichen Release müssen die Platzhalter entweder durch echte HTTPS-URLs oder – nach dokumentierter Entscheidung – durch leere Werte ersetzt werden.
+- bestätigte exakte Betreiberidentität (`owner.identityApproved = true`);
+- Werner hat Impressum und Datenschutzerklärung als Betreiber freigegeben (`legal.textsApproved = true`);
+- Werner hat die spätere externe Website-Bereitstellung freigegeben (`release.externalReviewApproved = true`);
+- erfolgreicher Lauf von `npm run legal:check` und `npm run release:build`.
 
-Zusätzlich erforderlich:
+Erst für den öffentlichen App-Launch zusätzlich erforderlich:
 
 - Markenrecherche für `zumHermann` vor Store-Veröffentlichung;
 - finale Store-Datenschutzangaben;
-- finaler Produktionsbinary-/Netzwerkaudit der App, danach erst
-  `release.appProductionAuditComplete = true`;
-- individuelle rechtliche Freigabe von Impressum und Datenschutzerklärung, danach `legal.textsApproved = true`;
-- ausdrückliche öffentliche Veröffentlichungsfreigabe von Werner Francis Reineke, danach `release.publicReleaseApproved = true`;
-- erfolgreicher Lauf von `npm run legal:check` und `npm run release:build`.
+- finaler Produktionsbinary-/Netzwerkaudit der App, danach `release.appProductionAuditComplete = true`;
+- nach finaler App-Prüfung und separater Marketingfreigabe `release.publicReleaseApproved = true`.
 
 ## 7. Aktueller Gate-Status
 

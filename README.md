@@ -1,8 +1,8 @@
 # zumHermann Website
 
-Statische Produkt- und Supportwebsite für die App **zumHermann**. Betreiber ist persönlich **Werner Francis Reineke**. Das Projekt verwendet keine Unternehmensbezeichnung.
+Statische Produkt- und Supportwebsite für die App **zumHermann**. Betreiber ist persönlich **Werner Francis Reineke-Ryskiewicz**. Das Projekt verwendet keine Unternehmensbezeichnung.
 
-> **Veröffentlichung gesperrt:** Die Domain `zumhermann.de` steht fest, aber Betreiber-, Kontakt-, Hosting- und Freigabeangaben fehlen weiterhin. Der lokale Entwicklungsstand funktioniert bewusst mit sichtbaren Platzhaltern; `npm run legal:check` muss bis zu deren Klärung fehlschlagen.
+> **Veröffentlichung gesperrt:** Betreiber, Kontakt, rechtliche Texte und die allgemeinen Cloudflare-Datenschutzangaben sind vorbereitet. Offen sind die persönliche Cloudflare-Kundenidentität, Mail-DNS, Dashboardprüfung und VSBG-Entscheidung; `npm run legal:check` muss bis zu deren Klärung fehlschlagen.
 
 ## Stack
 
@@ -59,8 +59,8 @@ Dieser Befehl ist momentan **absichtlich rot**. Für einen späteren Release fü
 - `/datenschutz` – getrennte Datenschutzhinweise für Website und mobile App
 - `/support` – Kontakt, Standort-, Kompass-, Teilen- und Löschhilfe
 - `/404.html` – benutzerfreundliche Fehlerseite
-- `/robots.txt` – blockiert Crawler, solange Hosting-, Rechts- und Veröffentlichungsfreigaben fehlen
-- `/sitemap.xml` – statische Sitemap; die echte Basis-URL wird aus der zentralen Konfiguration übernommen
+- `/robots.txt` – erlaubt das Lesen der `noindex`-Hinweise; erst nach öffentlicher Freigabe verweist es auf die Sitemap
+- `/sitemap.xml` – bleibt bis zur öffentlichen Freigabe leer; danach nutzt sie die zentrale Basis-URL
 
 ## Inhalte ändern
 
@@ -75,8 +75,8 @@ Vor einer Veröffentlichung:
 1. Alle tatsächlichen Angaben in dieser Datei eintragen. Nichts schätzen oder erfinden.
 2. Nicht verfügbare Store-Links nach dokumentierter Entscheidung als leere Zeichenfolge führen; die Oberfläche zeigt dann weiterhin „Demnächst erhältlich“.
 3. Verbraucherstreitbeilegung anhand der tatsächlichen Verhältnisse entscheiden. Ist kein Hinweis erforderlich, bleibt der konfigurierte Text leer und der Abschnitt wird nicht ausgegeben.
-4. Hostingdetails anhand des wirklich gebuchten Tarifs und der realen Konfiguration ergänzen.
-5. Erst nach fachlicher Prüfung `privacyDetailsComplete`, `textsApproved` und `appProductionAuditComplete` sowie nach ausdrücklicher Freigabe `publicReleaseApproved` auf `true` setzen.
+4. Persönliche Cloudflare-Kundenidentität und Dashboardzustand bestätigen; erst dann `privacyDetailsComplete` auf `true` setzen.
+5. `identityApproved`, `textsApproved` und `externalReviewApproved` sind bestätigt. `appProductionAuditComplete` bleibt eine getrennte App-Prüfung; `publicReleaseApproved` steuert die spätere Indexierung und öffentliche Marketingfreigabe.
 6. `npm run legal:check` und `npm run release:build` erfolgreich ausführen.
 
 Die offenen Entscheidungen und amtlichen Rechtsquellen sind in [LEGAL_TODO.md](LEGAL_TODO.md) dokumentiert.
@@ -102,8 +102,8 @@ Eine byte-identische Archivkopie liegt als `public/assets/brand-source.png` im W
 
 ## Git-Hinweis
 
-Dieses Verzeichnis ist als eigenes Repository innerhalb eines bereits vorhandenen, uncommittiert veränderten App-Repositorys angelegt. Niemals Website-Commits vom übergeordneten Repository aus erstellen. Insbesondere kein pauschales `git add .` im Verzeichnis darüber ausführen; dort könnte das eingebettete Repository versehentlich als Gitlink vorgemerkt werden.
+Dieses Verzeichnis ist ein eigenes Repository innerhalb des App-Repository-Arbeitsverzeichnisses. Der Elternordner ignoriert `/zumhermann-web/`; Website-Commits werden trotzdem ausschließlich in diesem Repository erstellt.
 
 ## Veröffentlichung
 
-Die vollständige, derzeit bewusst blockierte Anleitung für Cloudflare Workers Static Assets und die DNS-Migration von Squarespace steht in [DEPLOYMENT.md](DEPLOYMENT.md). Eine technisch erfolgreiche lokale Website ist noch keine rechtliche Veröffentlichungsfreigabe. Die vorbereiteten Texte ersetzen keine individuelle Rechtsberatung.
+Die vollständige, derzeit bewusst blockierte Anleitung für Cloudflare Workers Static Assets und den Cutover von der noch ausgelieferten Squarespace-Seite steht in [DEPLOYMENT.md](DEPLOYMENT.md). Eine technisch erfolgreiche lokale Website ist noch keine rechtliche Veröffentlichungsfreigabe. Die vorbereiteten Texte ersetzen keine individuelle Rechtsberatung.

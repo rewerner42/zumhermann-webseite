@@ -1,12 +1,12 @@
 ---
-import { isPublicReleaseReady } from '../config/site';
+import { isExternalSiteReady } from '../config/site';
 
 interface Props {
   compact?: boolean;
 }
 
 const { compact = false } = Astro.props;
-const releaseReady = isPublicReleaseReady();
+const releaseReady = isExternalSiteReady();
 ---
 
 {

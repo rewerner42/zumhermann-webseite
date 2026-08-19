@@ -79,7 +79,7 @@ Vorgehen:
 - Eigenes Git-Repository ausschließlich in diesem Verzeichnis.
 - Sinnvoll getrennte Commits für Planung/Grundgerüst, Umsetzung/Assets, Qualität/Dokumentation.
 - GitHub-Repository `rewerner42/zumhermann-webseite` auf `main`; Veröffentlichung der Quelländerungen ausschließlich aus dem eigenständigen Website-Repository. Das Repository ist derzeit ohne Anmeldung öffentlich erreichbar; eine Sichtbarkeitsänderung ist nicht Bestandteil dieses Deployments.
-- Kein öffentliches Deployment ohne echte Domain, vollständige Hosting-Datenschutzangaben, bestandenen `npm run legal:check` und ausdrückliche Freigabe von Werner Francis Reineke.
+- Kein öffentliches Deployment ohne echte Domain, vollständige Hosting-Datenschutzangaben, bestandenen `npm run legal:check` und ausdrückliche Freigabe von Werner Francis Reineke-Ryskiewicz.
 - Cloudflare Workers Static Assets als Ziel: asset-only, Ausgabe `dist`, kein `main`-Entrypoint, keine Bindings, keine Secrets.
 - Produktionsdomain `zumhermann.de` als Custom Domain; `workers.dev`, Preview URLs, Workers Observability und Logpush ausdrücklich deaktiviert.
 - `npm run deploy` erzwingt das vollständige Release-Gate und verwendet einen strikten Wrangler-Deploy.
@@ -101,14 +101,12 @@ Vorgehen:
 
 ## 9. Offene Pflichtangaben / Veröffentlichungssperre
 
-- `[[STRASSE_HAUSNUMMER]]`
-- `[[PLZ_ORT]]`
-- `[[E_MAIL]]`
-- `[[WEITERE_KONTAKTMÖGLICHKEIT]]`
-- `[[HOSTINGANBIETER]]` einschließlich konkreter Hosting-Datenschutzangaben und Löschkriterien
-- `[[DATENSCHUTZAUFSICHTSBEHÖRDE]]` nach Festlegung der Betreiberanschrift
-- `[[APPLE_APP_STORE_URL]]`
-- `[[GOOGLE_PLAY_URL]]`
+- Betreiber und Kontakt sind bestätigt: Werner Francis Reineke-Ryskiewicz, Geseker Str. 26,
+  33154 Salzkotten, `tach@zumhermann.de`, 05258 987282.
+- Cloudflare-Anbieter-, Lösch-, Empfänger-, Transfer- und LDI-NRW-Angaben sind vorbereitet; offen
+  bleiben persönliche Kundenidentität, Self-Serve-Vertrag und Dashboardbestätigung vor
+  `privacyDetailsComplete = true`.
+- Apple- und Google-Store-URLs bleiben bis zur tatsächlichen Verfügbarkeit bewusst leer.
 - Prüfung der konkreten Anwendbarkeit der Verbraucherstreitbeilegungsinformation nach § 36 VSBG (insbesondere Beschäftigtenzahl und Bereitschaft/Verpflichtung)
 - Prüfung, ob eine Umsatzsteuer-Identifikationsnummer oder Wirtschafts-Identifikationsnummer besteht und nach § 5 DDG tatsächlich zu veröffentlichen ist; niemals eine persönliche Steuernummer
 - Individuelle rechtliche Freigabe der Entwürfe

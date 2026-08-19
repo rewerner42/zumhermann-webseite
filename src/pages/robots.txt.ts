@@ -5,7 +5,7 @@ export const GET: APIRoute = () => {
   const origin = siteOrigin();
   const body = isPublicReleaseReady()
     ? `User-agent: *\nAllow: /\n\nSitemap: ${origin}/sitemap.xml\n`
-    : 'User-agent: *\nDisallow: /\n\n# Veröffentlichung gesperrt, bis alle Pflichtangaben und Freigaben vorliegen.\n';
+    : 'User-agent: *\nAllow: /\n\n# Seiten bleiben per noindex von der Indexierung ausgeschlossen, bis App-Audit und öffentliche Freigabe vorliegen.\n';
 
   return new Response(body, {
     headers: {

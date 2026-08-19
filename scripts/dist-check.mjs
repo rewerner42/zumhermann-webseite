@@ -144,6 +144,40 @@ for (const output of requiredOutputs) {
   }
 }
 
+const robotsFile = path.join(dist, 'robots.txt');
+const sitemapFile = path.join(dist, 'sitemap.xml');
+if ((await isFile(robotsFile)) && (await isFile(sitemapFile))) {
+  const robots = await readFile(robotsFile, 'utf8');
+  const sitemap = await readFile(sitemapFile, 'utf8');
+  const advertisesSitemap = /\bSitemap:\s*https:\/\//i.test(robots);
+
+  if (!/User-agent:\s*\*\s*\nAllow:\s*\//i.test(robots) || /\bDisallow:\s*\//i.test(robots)) {
+    errors.push('robots.txt muss das Lesen der noindex-Hinweise erlauben');
+  }
+
+  if (advertisesSitemap) {
+    if (!/<url>\s*<loc>https:\/\//i.test(sitemap)) {
+      errors.push('Öffentliche robots.txt verweist auf eine Sitemap ohne öffentliche URLs');
+    }
+  } else {
+    if (/<url>\s*<loc>/i.test(sitemap)) {
+      errors.push('Vor öffentlicher Freigabe darf die Sitemap keine URLs enthalten');
+    }
+
+    for (const output of [
+      'index.html',
+      'impressum/index.html',
+      'datenschutz/index.html',
+      'support/index.html',
+    ]) {
+      const html = await readFile(path.join(dist, output), 'utf8');
+      if (!/<meta\s+name="robots"\s+content="noindex, nofollow"/i.test(html)) {
+        errors.push(`${output}: noindex fehlt im Vorveröffentlichungszustand`);
+      }
+    }
+  }
+}
+
 if (await isFile(path.join(dist, '_headers'))) {
   const headers = await readFile(path.join(dist, '_headers'), 'utf8');
   const csp = headers.match(/^\s*Content-Security-Policy:\s*(.+)$/m)?.[1] ?? '';

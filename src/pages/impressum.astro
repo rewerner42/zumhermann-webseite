@@ -1,10 +1,10 @@
 ---
 import LegalDraftNotice from '../components/LegalDraftNotice.astro';
-import { hasPlaceholder, isPublicReleaseReady, site } from '../config/site';
+import { hasPlaceholder, isExternalSiteReady, site } from '../config/site';
 import BaseLayout from '../layouts/BaseLayout.astro';
 
 const emailReady = !hasPlaceholder(site.owner.email);
-const releaseReady = isPublicReleaseReady();
+const releaseReady = isExternalSiteReady();
 ---
 
 <BaseLayout

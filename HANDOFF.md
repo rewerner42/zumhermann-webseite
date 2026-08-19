@@ -41,7 +41,7 @@ Kein Asset wurde neu gezeichnet oder durch eine Ersatzillustration ersetzt. Das 
 
 - Foreground-Standort und Geräteheading werden für Entfernung und Richtung genutzt.
 - Berechnung erfolgt lokal gegen die feste Denkmalposition.
-- Keine Übertragung von Standort oder Heading an Werner Francis Reineke oder ein eigenes Backend im geprüften App-Code.
+- Keine Übertragung von Standort oder Heading an den konfigurierten persönlichen Betreiber oder ein eigenes Backend im geprüften App-Code.
 - Kein Konto, keine Werbung, keine Betreiber-Analytics, kein Tracking, keine Remote-API und kein Drittanbieter-Crash-SDK im geprüften Stand.
 - Dauerhaft gespeichert wird nur der lokale Onboardingstatus.
 - Share-Grafik enthält gerundete Distanz und Richtungsgenauigkeit, aber keine exakte Position, Koordinaten, Ortsangabe oder Zeit.
@@ -85,45 +85,35 @@ Erwartet fehlgeschlagen:
 
 Exakt offen sind:
 
-- Straße und Hausnummer;
-- Postleitzahl und Ort;
-- Support-/Kontakt-E-Mail;
-- weitere schnelle und unmittelbare Kontaktmöglichkeit;
-- tatsächlicher Hostinganbieter;
-- Hosting-Logumfang und Löschkriterien;
-- Hostingempfänger und Unterauftragnehmer;
-- Hosting-Verarbeitungsorte und mögliche Drittlandtransfers;
-- zuständige Datenschutzaufsichtsbehörde;
-- Cloudflare-Vertragspartner, Zonenplan, DPA/AVV und Dashboardaudit optionaler Analyse-, Sicherheits-,
-  Cookie- und Loggingfunktionen;
-- verlustfreie DNS-Migration von Squarespace zu Cloudflare einschließlich SPF, `www`-Weiterleitung und
-  HTTPS-Erzwingung;
+- persönliche Cloudflare-Kundenidentität statt des aktuell als GmbH bezeichneten Accounts;
+- Bestätigung von Self-Serve-Vertrag/DPA und Dashboardaudit optionaler Analyse-, Sicherheits-, Cookie-,
+  Logging- und Lokalisierungsfunktionen; danach `privacyDetailsComplete = true`;
+- Proton-MX-/SPF-/DKIM-Konfiguration und externer Empfangstest für `tach@zumhermann.de`;
+- DNS-/Squarespace-Rollback, `www`-Weiterleitung und HTTPS-Erzwingung;
 - gegebenenfalls Umsatzsteuer-Identifikationsnummer oder Wirtschafts-Identifikationsnummer, sofern vorhanden und rechtlich zu veröffentlichen;
 - VSBG-Entscheidung anhand Unternehmerstatus, Beschäftigtenzahl, Bindung und Bereitschaft;
-- Apple-App-Store-URL;
-- Google-Play-URL;
+- Apple-App-Store-URL, sobald die App dort verfügbar ist;
+- Google-Play-URL, sobald die App dort verfügbar ist;
 - finale Produktionsbinary-/Netzwerkprüfung der App;
-- dokumentierte Bestätigung dieser Prüfung über `release.appProductionAuditComplete`;
-- individuelle rechtliche Freigabe;
+- dokumentierte Bestätigung der finalen App-Prüfung über `release.appProductionAuditComplete`; diese ist von der vorher möglichen Freigabe der rechtlich vollständigen, nicht indexierten Website getrennt;
 - ausdrückliche öffentliche Veröffentlichungsfreigabe.
 
 Eine persönliche Steuernummer darf nicht veröffentlicht oder angefordert werden.
 
 ## Schritte zur Veröffentlichung
 
-1. Alle Tatsachen und Entscheidungen aus `LEGAL_TODO.md` klären.
-2. Zentrale Werte in `src/config/site.ts` eintragen; keine Inhalte in einzelnen Seiten duplizieren.
-3. Finales App-Binary und Plattformmanifeste prüfen, Store-Datenschutzangaben abgleichen.
-4. Impressum und Datenschutzerklärung individuell rechtlich prüfen lassen.
-5. Freigabe-Flags erst nach tatsächlicher Prüfung und ausdrücklicher Veröffentlichungserlaubnis setzen.
-6. `npm ci`, `npm run legal:check` und `npm run release:build` erfolgreich ausführen.
-7. Squarespace-DNS nach `DEPLOYMENT.md` vollständig sichern und die Zone zu Cloudflare delegieren.
-8. Erst dann `npm run deploy` ausführen.
-9. Öffentliches Ergebnis erneut technisch, visuell und datenschutzseitig abnehmen.
+1. Die persönliche Cloudflare-Kundenidentität, Mail-DNS, Dashboardprüfung und VSBG-Angabe klären.
+2. `privacyDetailsComplete` erst nach dieser Prüfung setzen.
+3. `npm run legal:check` und `npm run release:build` erfolgreich ausführen.
+4. DNS nach `DEPLOYMENT.md` sichern und erst nach separater Freigabe die nicht indexierte Website bereitstellen.
+5. Live-Support-, Datenschutz- und Impressumsseiten prüfen; Store-Hinweise bleiben nicht klickbar.
+6. Danach das finale App-Binary und die Plattformmanifeste prüfen und `appProductionAuditComplete` setzen.
+7. Nach Store-Bereitschaft und separater Marketingfreigabe `publicReleaseApproved` setzen und erneut bereitstellen.
+8. Das öffentliche Ergebnis technisch, visuell und datenschutzseitig abnehmen.
 
 ## Git und GitHub-Repository
 
-Das Websiteverzeichnis ist ein eigenständiges Git-Repository auf `main`. Der SSH-Remote ist
+Das Websiteverzeichnis ist ein eigenständiges Git-Repository mit `main` als Standardbranch. Der SSH-Remote ist
 `git@github.com:rewerner42/zumhermann-webseite.git`; der zuvor vorhandene README-Initialstand wurde
 ohne Force-Push in die Websitehistorie aufgenommen. Änderungen am übergeordneten App-Repository sind
 nicht Bestandteil der Website-Commits.
@@ -131,10 +121,11 @@ nicht Bestandteil der Website-Commits.
 Die Repository-Seite ist derzeit ohne GitHub-Anmeldung mit HTTP 200 erreichbar und damit öffentlich.
 Eine Änderung der GitHub-Sichtbarkeit wurde für diesen Worker-Auftrag weder angefordert noch vorgenommen.
 
-Wrangler 4.123.0 ist lokal per OAuth angemeldet. Im aktiven Cloudflare-Account existiert noch kein
-Worker `zumhermann-webseite`; der erste erfolgreiche Produktionsdeploy wäre daher eine Neuanlage und
-ein echter Domain-Cutover. Zugangsdaten, Tokens und private Schlüssel werden weder im Repository noch
-in dieser Dokumentation gespeichert.
+Wrangler 4.123.0 ist lokal per OAuth angemeldet, aber der aktive Cloudflare-Account trägt noch die
+GmbH-Bezeichnung. Diese Kundenidentität muss vor dem persönlichen Release geklärt werden. Im Account
+existiert noch kein Worker `zumhermann-webseite`; der erste erfolgreiche Produktionsdeploy wäre daher
+eine Neuanlage und ein echter Domain-Cutover. Zugangsdaten, Tokens und private Schlüssel werden weder
+im Repository noch in dieser Dokumentation gespeichert.
 
 ## Spätere Pflege
 

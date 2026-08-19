@@ -3,10 +3,10 @@ import FeatureCard from '../components/FeatureCard.astro';
 import SectionHeading from '../components/SectionHeading.astro';
 import StepCard from '../components/StepCard.astro';
 import StoreButtons from '../components/StoreButtons.astro';
-import { isPublicReleaseReady } from '../config/site';
+import { isExternalSiteReady, site } from '../config/site';
 import BaseLayout from '../layouts/BaseLayout.astro';
 
-const releaseReady = isPublicReleaseReady();
+const releaseReady = isExternalSiteReady();
 ---
 
 <BaseLayout>
@@ -96,7 +96,7 @@ const releaseReady = isPublicReleaseReady();
         <FeatureCard
           marker="LOKAL"
           title="Lokale Verarbeitung"
-          text="Standort und Kompassdaten werden nicht an Werner Francis Reineke oder ein eigenes Backend übertragen."
+          text={`Standort und Kompassdaten werden nicht an ${site.owner.name} oder ein eigenes Backend übertragen.`}
         />
       </div>
     </div>
@@ -169,7 +169,7 @@ const releaseReady = isPublicReleaseReady();
           <summary>Wird mein Standort übertragen?</summary>
           <p>
             Nein. Der App-Code berechnet Richtung und Entfernung auf deinem Gerät und überträgt
-            Standort- oder Kompassdaten nicht an Werner Francis Reineke oder ein eigenes Backend.
+            Standort- oder Kompassdaten nicht an {site.owner.name} oder ein eigenes Backend.
             Dein Betriebssystem und dessen Standortdienste können Daten in eigener Verantwortung
             verarbeiten.
           </p>
