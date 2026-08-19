@@ -1,7 +1,6 @@
 ---
 import FeatureCard from '../components/FeatureCard.astro';
 import SectionHeading from '../components/SectionHeading.astro';
-import StepCard from '../components/StepCard.astro';
 import StoreButtons from '../components/StoreButtons.astro';
 import { isExternalSiteReady, site } from '../config/site';
 import BaseLayout from '../layouts/BaseLayout.astro';
@@ -43,65 +42,6 @@ const releaseReady = isExternalSiteReady();
     <div class="forest-edge" aria-hidden="true"></div>
   </section>
 
-  <section class="section section--paper" id="so-funktionierts">
-    <div class="shell">
-      <SectionHeading
-        eyebrow="Drei Schritte"
-        title="So funktioniert es"
-        intro="Kein Kartenstudium, keine Wanderstiefel. Dein Smartphone und ein ruhiger Dreh genügen."
-      />
-      <div class="step-grid">
-        <StepCard
-          number="01"
-          title="Standort freigeben"
-          text="Die App benötigt deinen aktuellen Standort, um Entfernung und Zielrichtung lokal zu berechnen."
-        />
-        <StepCard
-          number="02"
-          title="Handy ausrichten"
-          text="Halte dein Smartphone möglichst flach. Die Oberkante zeigt die Richtung an."
-        />
-        <StepCard
-          number="03"
-          title="Hermann finden"
-          text="Sieh live, wo Hermann liegt, wie weit es ist und wie genau du das Ziel hältst."
-        />
-      </div>
-    </div>
-  </section>
-
-  <section class="section section--mist" id="funktionen">
-    <div class="shell">
-      <SectionHeading
-        eyebrow="Weniger Schnickschnack, mehr Richtung"
-        title="Alles an Bord, was Hermann braucht"
-        intro="Die App konzentriert sich auf eine einzige, wunderbar ostwestfälische Mission."
-      />
-      <div class="feature-grid">
-        <FeatureCard
-          marker="N"
-          title="Richtungskompass"
-          text="Ein klarer Live-Hinweis zeigt, wie du dein Smartphone zum Hermannsdenkmal drehen musst."
-        />
-        <FeatureCard
-          marker="KM"
-          title="Entfernung"
-          text="Die Luftlinie zum Hermann wird direkt auf deinem Gerät ausgerechnet und gut lesbar angezeigt."
-        />
-        <FeatureCard
-          marker="↗"
-          title="Ergebnis teilen"
-          text="Erstelle eine Ergebnisgrafik mit Entfernung und Genauigkeit – ohne genaue Position oder Koordinaten."
-        />
-        <FeatureCard
-          marker="PRIVAT"
-          title="Deine Daten bleiben bei dir"
-          text="Standort und Kompassdaten verlassen dein Smartphone nicht. Es gibt kein Konto und kein eigenes Backend."
-        />
-      </div>
-    </div>
-  </section>
-
   <section class="section story-section" id="der-spruch">
     <div class="shell story-grid">
       <figure class="story-art">
@@ -134,6 +74,38 @@ const releaseReady = isExternalSiteReady();
           Der Kompass ist echt. Die versprochene Wirkung des Spruchs ist es ausdrücklich nicht.
           Ostwestfälisch trocken darf man darüber trotzdem schmunzeln.
         </p>
+      </div>
+    </div>
+  </section>
+
+  <section class="section section--mist" id="funktionen">
+    <div class="shell">
+      <SectionHeading
+        eyebrow="Weniger Schnickschnack, mehr Richtung"
+        title="Alles an Bord, was Hermann braucht"
+        intro="Die App konzentriert sich auf eine einzige, wunderbar ostwestfälische Mission."
+      />
+      <div class="feature-grid">
+        <FeatureCard
+          marker="N"
+          title="Richtungskompass"
+          text="Ein klarer Live-Hinweis zeigt, wie du dein Smartphone zum Hermannsdenkmal drehen musst."
+        />
+        <FeatureCard
+          marker="KM"
+          title="Entfernung"
+          text="Die Luftlinie zum Hermann wird direkt auf deinem Gerät ausgerechnet und gut lesbar angezeigt."
+        />
+        <FeatureCard
+          marker="↗"
+          title="Ergebnis teilen"
+          text="Erstelle eine Ergebnisgrafik mit Entfernung und Genauigkeit – ohne genaue Position oder Koordinaten."
+        />
+        <FeatureCard
+          marker="PRIVAT"
+          title="Deine Daten bleiben bei dir"
+          text="Standort und Kompassdaten verlassen dein Smartphone nicht. Es gibt kein Konto und kein eigenes Backend."
+        />
       </div>
     </div>
   </section>
