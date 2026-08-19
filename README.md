@@ -13,7 +13,7 @@ Statische Produkt- und Supportwebsite für die App **zumHermann**. Betreiber ist
 - keine extern geladenen Schriften, Medien oder Einbettungen
 - keine Cookies, kein Tracking, keine Werbung und kein Browserspeicher
 
-Die gebaute Website liegt in `dist/` und wird von genau einem Cloudflare Worker ausgeliefert. Sein kleiner Einstiegspunkt leitet `www` kanonisch auf `https://zumhermann.de` um und reicht alle übrigen Anfragen unverändert an die statische `ASSETS`-Bindung weiter; Cloudflares Zoneneinstellung erzwingt HTTPS. Es gibt kein Backend, keine Datenspeicherung und keine externen Worker-Anfragen.
+Die gebaute Website liegt in `dist/` und wird von genau einem Cloudflare Worker auf `https://zumhermann.de` und `https://www.zumhermann.de` ausgeliefert. Sein kleiner Einstiegspunkt reicht alle Anfragen unverändert an dieselbe statische `ASSETS`-Bindung weiter; Cloudflares Zoneneinstellung erzwingt HTTPS. Die HTML-Kanonicals zeigen weiterhin auf den Apex. Es gibt kein Backend, keine Datenspeicherung und keine externen Worker-Anfragen.
 
 ## Voraussetzungen
 

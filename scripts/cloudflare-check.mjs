@@ -6,7 +6,7 @@ const expected = {
   workerName: 'zumhermann-webseite',
   origin: 'https://zumhermann.de',
   host: 'zumhermann.de',
-  redirectHost: 'www.zumhermann.de',
+  alternateHost: 'www.zumhermann.de',
 };
 const expectedHeaderRules = [
   '/*',
@@ -82,11 +82,11 @@ if (
   config.routes.length !== 2 ||
   config.routes[0]?.pattern !== expected.host ||
   config.routes[0]?.custom_domain !== true ||
-  config.routes[1]?.pattern !== `${expected.redirectHost}/*` ||
+  config.routes[1]?.pattern !== `${expected.alternateHost}/*` ||
   config.routes[1]?.zone_name !== expected.host
 ) {
   errors.push(
-    `Der Worker muss ${expected.host} als Custom Domain und ${expected.redirectHost}/* als WWW-Redirect-Route bedienen.`,
+    `Der Worker muss ${expected.host} als Custom Domain und ${expected.alternateHost}/* als zweite Host-Route bedienen.`,
   );
 }
 
@@ -136,30 +136,18 @@ for (const [name, command] of Object.entries(expectedScripts)) {
 }
 
 const worker = (await import('../src/worker.mjs')).default;
-const noAssetAccess = {
-  ASSETS: {
-    fetch() {
-      throw new Error('Der Redirect darf die Assets-Bindung nicht aufrufen.');
-    },
-  },
-};
-const wwwResponse = await worker.fetch(
-  new Request('http://www.zumhermann.de/ein/pfad?quelle=test'),
-  noAssetAccess,
-);
-if (
-  wwwResponse.status !== 301 ||
-  wwwResponse.headers.get('location') !== 'https://zumhermann.de/ein/pfad?quelle=test' ||
-  wwwResponse.headers.has('set-cookie')
-) {
-  errors.push('Der WWW-Redirect bewahrt Pfad und Query nicht korrekt oder setzt unerwartete Cookies.');
-}
-
 const assetResponse = await worker.fetch(new Request('https://zumhermann.de/'), {
   ASSETS: { fetch: () => new Response('asset-ok', { status: 200 }) },
 });
 if (assetResponse.status !== 200 || (await assetResponse.text()) !== 'asset-ok') {
   errors.push('Der Apex wird nicht unverändert über die statische ASSETS-Bindung ausgeliefert.');
+}
+
+const wwwAssetResponse = await worker.fetch(new Request('https://www.zumhermann.de/'), {
+  ASSETS: { fetch: () => new Response('www-asset-ok', { status: 200 }) },
+});
+if (wwwAssetResponse.status !== 200 || (await wwwAssetResponse.text()) !== 'www-asset-ok') {
+  errors.push('WWW wird nicht unverändert über dieselbe statische ASSETS-Bindung ausgeliefert.');
 }
 
 if (errors.length > 0) {
@@ -171,5 +159,5 @@ if (errors.length > 0) {
 }
 
 console.log(
-  `Cloudflare-Konfiguration geprüft: ${expected.workerName} liefert ./dist über ${expected.origin} aus und leitet WWW kanonisch um.`,
+  `Cloudflare-Konfiguration geprüft: ${expected.workerName} liefert ./dist über ${expected.origin} und https://${expected.alternateHost} aus.`,
 );

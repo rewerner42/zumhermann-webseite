@@ -1,10 +1,10 @@
 # Deployment als Cloudflare Worker
 
 Stand: 19. August 2026
-Ziel: `https://zumhermann.de` über Cloudflare Workers Static Assets; `www.zumhermann.de` leitet dauerhaft auf den kanonischen Apex weiter.
+Ziel: `https://zumhermann.de` und `https://www.zumhermann.de` über dieselben Cloudflare Workers Static Assets; HTML-Kanonicals zeigen auf den Apex.
 
-Die Website nutzt genau einen Worker. Sein minimaler Einstiegspunkt leitet `www` auf den kanonischen
-HTTPS-Apex und reicht alle übrigen Anfragen an die statische `ASSETS`-Bindung aus `dist/` weiter;
+Die Website nutzt genau einen Worker. Sein minimaler Einstiegspunkt reicht Anfragen auf Apex und `www`
+an dieselbe statische `ASSETS`-Bindung aus `dist/` weiter;
 Cloudflares Zoneneinstellung „Always Use HTTPS“ erzwingt HTTPS. Der Worker besitzt
 kein Backend, keine Datenbank, keine Secrets, keine eigene Datenspeicherung und keine externen
 Netzwerkaufrufe. Die verbindliche Konfiguration liegt in `wrangler.jsonc`. **Eine öffentliche
@@ -19,7 +19,7 @@ Bereitstellung bleibt gesperrt, solange `npm run legal:check` fehlschlägt.**
 - Der einzige `main`-Entrypoint ist `src/worker.mjs`; außer der statischen `ASSETS`-Bindung existieren keine Bindings.
 - `not_found_handling: "404-page"` liefert die eigene Fehlerseite mit HTTP 404.
 - `html_handling: "drop-trailing-slash"` entspricht den slashlosen Astro-URLs.
-- Die einzige Worker-Custom-Domain ist `zumhermann.de`; derselbe Worker bedient zusätzlich die Route `www.zumhermann.de/*` und leitet Pfad und Query-String auf den Apex um.
+- Die einzige Worker-Custom-Domain ist `zumhermann.de`; derselbe Worker bedient zusätzlich die Route `www.zumhermann.de/*` und liefert dort dieselben statischen Assets aus.
 - `_headers` setzt CSP, Frame-, Referrer-, MIME- und Permissions-Schutz sowie kontrolliertes Caching.
 - Cloudflare Web Analytics, Zaraz, Rocket Loader, Apps, Turnstile/Access und cookie-setzende Bot- oder
   Challengefunktionen werden nicht über dieses Repository gesteuert und müssen im Dashboard geprüft
@@ -61,7 +61,7 @@ Die DNS-Zone ist zu Cloudflare delegiert und der Cutover ist abgeschlossen:
 - Worker-Version: `ac6f004e-0f58-4348-bce1-b97e4a9ee651`;
 - der Apex wird über Cloudflares verwalteten Custom-Domain-DNS ausgeliefert;
 - der proxied `www`-CNAME zu `ext-sq.squarespace.com` bleibt als Rollbackziel bestehen, wird aber von
-  der Worker-Route abgefangen und kanonisch umgeleitet;
+  der Worker-Route abgefangen und über denselben Worker ausgeliefert;
 - „Always Use HTTPS“ ist aktiv;
 - Proton-MX, SPF, drei DKIM-CNAMEs, DMARC und Verifizierungs-TXT sind autoritativ korrekt;
 - es ist weiterhin kein DS-Record veröffentlicht.
@@ -86,14 +86,13 @@ Beim Cutover am 19. August 2026 abgeschlossen:
 3. Proton-MX-, SPF-, DKIM- und DMARC-Einträge anhand der bestätigten Mailkonfiguration reparieren;
 4. den vorhandenen Squarespace-Zustand für Apex und `www` als ersten Rollback dokumentieren;
 5. den vorhandenen proxied `www`-Record als Rollbackziel beibehalten und die Route
-   `www.zumhermann.de/*` im einzigen Worker mit Status 301, Pfadübernahme und erhaltenem Query-String
-   auf den Apex leiten;
+   `www.zumhermann.de/*` im einzigen Worker mit denselben statischen Assets ausliefern;
 6. „Always Use HTTPS“ für die Zone aktivieren. Die CSP-Direktive `upgrade-insecure-requests` ersetzt
    keine Weiterleitung der obersten HTTP-Anfrage;
 7. `npm run deploy` für die Apex-Custom-Domain ausführen und die Live-Matrix prüfen.
 
-Offen bleibt lediglich ein praktischer Empfangs- und Versandtest von `tach@zumhermann.de` aus einem
-unabhängigen Postfach; die autoritativen DNS-Einträge sind vollständig.
+Der praktische Empfangs- und Versandtest von `tach@zumhermann.de` ist bestanden; die autoritativen
+DNS-Einträge sind vollständig.
 
 ## Lokale technische Prüfung
 
@@ -142,7 +141,7 @@ Am 19. August 2026 bestanden:
 - `/impressum/` muss auf `/impressum` weiterleiten;
 - eine unbekannte URL muss die eigene Seite mit HTTP 404 liefern;
 - `/_headers` muss HTTP 404 liefern;
-- `www.zumhermann.de` muss einmalig auf den passenden Apex-Pfad weiterleiten;
+- `www.zumhermann.de` muss dieselbe statische Website ausliefern;
 - Zertifikat, Canonicals, Open Graph und Sitemap nutzen exakt `zumhermann.de`; Cloudflare ergänzt die
   ausgelieferte `robots.txt` um seine verwalteten Content-Signals/AI-Crawler-Regeln;
 - Bei externer Vorab-Bereitstellung dürfen Pflichtseiten keine Platzhalter oder Entwurfsbanner enthalten; `noindex` muss bis zum finalen App-Audit und zur öffentlichen Freigabe bestehen bleiben.

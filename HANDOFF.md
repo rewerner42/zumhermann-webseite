@@ -13,7 +13,7 @@ Veröffentlichungsstatus: **nicht indexierte Vorabversion live unter `https://zu
 - responsive Gestaltung für kleine und große Smartphones, Tablets und Desktop;
 - zentrale Konfiguration in `src/config/site.ts`;
 - Sitemap, robots.txt, Favicons, App-Icon, Open Graph, Twitter-Metadaten und `SoftwareApplication`-Strukturdaten;
-- genau ein Cloudflare Worker mit minimalem `www`-Redirect, Cloudflare-HTTPS-Erzwingung, Static Assets, Custom 404, slashlosem Routing und Sicherheitsheadern;
+- genau ein Cloudflare Worker für Apex und `www`, Cloudflare-HTTPS-Erzwingung, Static Assets, Custom 404, slashlosem Routing und Sicherheitsheadern;
 - öffentliche `workers.dev`- und Preview-URLs sowie Workers Observability und Logpush deaktiviert;
 - kein Backend, kein Tracking, keine Werbung, kein Cookie-Banner und kein eigenes Client-JavaScript;
 - Rechts-/Pflichtangabengate, Inhaltsprüfung, Build-Ausgabeprüfung und GitHub-Actions-Workflows.
@@ -81,7 +81,7 @@ Erfolgreich abgeschlossen:
 
 - `npm run legal:check`, vollständiges `npm run release:build` und Produktionsdeploy;
 - Live-Status 200 für Startseite, Impressum, Datenschutz und Support sowie 404 für unbekannte Pfade und `/_headers`;
-- HTTPS-Erzwingung, kanonischer `www`-Redirect mit Pfad/Query, gültiges Zertifikat und fehlende `Set-Cookie`-Header;
+- HTTPS-Erzwingung, Auslieferung auf Apex und `www`, gültige Zertifikate und fehlende `Set-Cookie`-Header;
 - Worker-Version `ac6f004e-0f58-4348-bce1-b97e4a9ee651`.
 
 ## Offene Pflichtangaben

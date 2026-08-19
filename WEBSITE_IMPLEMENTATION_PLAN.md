@@ -80,10 +80,10 @@ Vorgehen:
 - Sinnvoll getrennte Commits für Planung/Grundgerüst, Umsetzung/Assets, Qualität/Dokumentation.
 - GitHub-Repository `rewerner42/zumhermann-webseite` auf `main`; Veröffentlichung der Quelländerungen ausschließlich aus dem eigenständigen Website-Repository. Das Repository ist derzeit ohne Anmeldung öffentlich erreichbar; eine Sichtbarkeitsänderung ist nicht Bestandteil dieses Deployments.
 - Kein öffentliches Deployment ohne echte Domain, vollständige Hosting-Datenschutzangaben, bestandenen `npm run legal:check` und ausdrückliche Freigabe von Werner Francis Reineke-Ryskiewicz.
-- Genau ein Cloudflare Worker als Ziel: minimaler `www`-Redirect im `main`-Entrypoint, HTTPS-Erzwingung auf Zonenebene, Ausgabe `dist` über die `ASSETS`-Bindung, keine weiteren Bindings und keine Secrets.
+- Genau ein Cloudflare Worker als Ziel: Apex und `www` im `main`-Entrypoint, HTTPS-Erzwingung auf Zonenebene, Ausgabe `dist` über dieselbe `ASSETS`-Bindung, keine weiteren Bindings und keine Secrets.
 - Produktionsdomain `zumhermann.de` als Custom Domain; `workers.dev`, Preview URLs, Workers Observability und Logpush ausdrücklich deaktiviert.
 - `npm run deploy` erzwingt das vollständige Release-Gate und verwendet einen strikten Wrangler-Deploy.
-- Die Cloudflare-Zone behält den bisherigen proxied `www`-Record als Rollbackziel; derselbe Worker leitet `www` kanonisch auf den Apex um.
+- Die Cloudflare-Zone behält den bisherigen proxied `www`-Record als Rollbackziel; derselbe Worker liefert auf `www` dieselben statischen Assets aus.
 
 ## 8. Automatisierte Tests und Abnahmekriterien
 
@@ -131,7 +131,7 @@ Vorgehen:
 ## 11. Erweiterungsplan Cloudflare Workers
 
 1. Ist-Zustand, Workername, Cloudflare-Anmeldung, vorhandene Deployments und öffentliches DNS prüfen.
-2. Einen einzelnen minimalen Worker mit `www`-Redirect, HTTPS-Erzwingung auf Zonenebene, Static Assets, Custom 404 und slashlosem HTML-Routing konfigurieren.
+2. Einen einzelnen minimalen Worker für Apex und `www`, HTTPS-Erzwingung auf Zonenebene, Static Assets, Custom 404 und slashlosem HTML-Routing konfigurieren.
 3. Öffentliche Worker- und Preview-URLs sowie Workers Observability und Logpush deaktivieren.
 4. Produktionsbefehl so kapseln, dass `legal:check` vor jedem Upload zwingend ausgeführt wird.
 5. Sicherheitsheader auf Workers-Verhalten abstimmen und negative Langzeitcaches für fehlende stabile Assets vermeiden.
