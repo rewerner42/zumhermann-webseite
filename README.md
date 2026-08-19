@@ -91,6 +91,8 @@ Verbindliche Quelle der Wahrheit ist die unveränderte Datei:
 
 Eine byte-identische Archivkopie liegt als `public/assets/brand-source.png` im Websiteprojekt. Hero, Szene, Social Preview und Icons sind ausschließlich unveränderte Kopien oder direkte Zuschneide-/Skalierableitungen aus dieser freigegebenen Quelle. Es gibt kein neu gezeichnetes oder generiertes Ersatzlogo.
 
+Das Foto `public/assets/hermann-photo.jpg` stammt von PLT13 über Wikimedia Commons und steht unter [CC BY-SA 4.0](https://creativecommons.org/licenses/by-sa/4.0/). Quelle und Lizenz werden direkt unter dem Foto auf der Startseite genannt.
+
 ## Metadaten und SEO
 
 - `lang="de"`, semantische Überschriften und sichtbare Fokuszustände

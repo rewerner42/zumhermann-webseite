@@ -94,31 +94,34 @@ const releaseReady = isExternalSiteReady();
           text="Erstelle eine Ergebnisgrafik mit Entfernung und Genauigkeit – ohne genaue Position oder Koordinaten."
         />
         <FeatureCard
-          marker="LOKAL"
-          title="Lokale Verarbeitung"
-          text={`Standort und Kompassdaten werden nicht an ${site.owner.name} oder ein eigenes Backend übertragen.`}
+          marker="PRIVAT"
+          title="Deine Daten bleiben bei dir"
+          text="Standort und Kompassdaten verlassen dein Smartphone nicht. Es gibt kein Konto und kein eigenes Backend."
         />
       </div>
     </div>
   </section>
 
-  <section class="trust-band" aria-labelledby="trust-title">
-    <div class="shell trust-inner">
-      <p class="eyebrow eyebrow--light">Privatsphäre ohne Nebelkerzen</p>
-      <h2 id="trust-title">Kein Konto. Kein Tracking. Keine Werbung.</h2>
-      <p>
-        Die Kernfunktion läuft lokal auf deinem Smartphone. Die Website setzt ebenfalls keine
-        Analysewerkzeuge, Werbetechnik oder nicht notwendigen Cookies ein.
-      </p>
-      <a class="text-link text-link--light" href="/datenschutz">Datenschutz im Detail</a>
-    </div>
-  </section>
-
   <section class="section story-section" id="der-spruch">
     <div class="shell story-grid">
-      <div class="story-art" aria-hidden="true">
-        <img src="/assets/hermann-scene.png" width="480" height="368" alt="" loading="lazy" />
-      </div>
+      <figure class="story-art">
+        <img
+          src="/assets/hermann-photo.jpg"
+          width="960"
+          height="1371"
+          alt="Das Hermannsdenkmal in Detmold, von unten fotografiert"
+          loading="lazy"
+        />
+        <figcaption>
+          Foto: <a
+            href="https://commons.wikimedia.org/wiki/File:Hermannsdenkmal_in_Detmold.jpg"
+            rel="external"
+          >PLT13 / Wikimedia Commons</a>, <a
+            href="https://creativecommons.org/licenses/by-sa/4.0/"
+            rel="external license"
+          >CC BY-SA 4.0</a>
+        </figcaption>
+      </figure>
       <div class="story-copy">
         <p class="eyebrow">Man erzählt sich …</p>
         <h2>Ein Spruch mit Heimatblick</h2>
@@ -194,14 +197,6 @@ const releaseReady = isExternalSiteReady();
           <p>
             Die Store-Veröffentlichung wird vorbereitet. Sobald echte Store-Links vorliegen, werden
             die bisher nicht klickbaren Hinweise auf dieser Seite ersetzt.
-          </p>
-        </details>
-        <details>
-          <summary>Braucht die Website einen Cookie-Banner?</summary>
-          <p>
-            Nach aktuellem technischen Stand nein: Diese Website setzt keine Cookies, kein Tracking
-            und keinen Browserspeicher ein. Technisch notwendige Server- und Sicherheitsverarbeitung
-            beim Hoster wird in der Datenschutzerklärung konkret beschrieben.
           </p>
         </details>
       </div>

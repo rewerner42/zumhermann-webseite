@@ -9,7 +9,7 @@ const auditDirectory = path.join(root, '.wrangler', 'audit');
 const maximumAssetCount = 20_000;
 const maximumAssetSize = 25 * 1024 * 1024;
 const metadataFiles = new Set(['_headers']);
-const allowedAssetExtensions = new Set(['.css', '.html', '.png', '.txt', '.xml']);
+const allowedAssetExtensions = new Set(['.css', '.html', '.jpg', '.png', '.txt', '.xml']);
 const errors = [];
 
 async function walk(directory) {

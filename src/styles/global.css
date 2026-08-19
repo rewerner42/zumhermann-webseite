@@ -311,7 +311,8 @@
 
   .hero {
     position: relative;
-    min-height: min(48rem, calc(100vh - 5rem));
+    min-height: calc(100vh - 5rem);
+    min-height: calc(100svh - 5rem);
     overflow: hidden;
     background:
       radial-gradient(circle at 74% 26%, rgba(255, 255, 255, 0.92), transparent 25rem),
@@ -323,7 +324,8 @@
     position: relative;
     z-index: 3;
     display: grid;
-    min-height: min(43rem, calc(100vh - 5rem));
+    min-height: calc(100vh - 5rem);
+    min-height: calc(100svh - 5rem);
     grid-template-columns: minmax(20rem, 0.9fr) minmax(24rem, 1.15fr);
     gap: clamp(2rem, 4vw, 4.5rem);
     align-items: center;
@@ -529,17 +531,6 @@
     line-height: 1;
   }
 
-  .step-card::after {
-    position: absolute;
-    top: 1.65rem;
-    right: 1.65rem;
-    width: 4.5rem;
-    height: 4.5rem;
-    border: 1px solid rgba(71, 126, 104, 0.3);
-    border-radius: 50%;
-    content: "";
-  }
-
   .step-card h3,
   .feature-card h3 {
     margin-bottom: var(--space-2);
@@ -555,61 +546,17 @@
   }
 
   .feature-marker {
-    display: inline-grid;
-    min-width: 3.3rem;
-    min-height: 3.3rem;
-    place-items: center;
-    margin-bottom: var(--space-5);
-    padding-inline: 0.7rem;
-    border: 1px solid rgba(71, 126, 104, 0.42);
-    border-radius: 50%;
-    color: var(--forest);
-    font-size: 0.7rem;
+    display: block;
+    margin-bottom: var(--space-4);
+    color: var(--bronze-dark);
+    font-size: 0.76rem;
     font-weight: 900;
-    letter-spacing: 0.06em;
+    letter-spacing: 0.14em;
   }
 
-  .trust-band {
-    position: relative;
-    overflow: hidden;
-    background:
-      radial-gradient(circle at 80% 50%, rgba(71, 126, 104, 0.42), transparent 30rem),
-      var(--forest-deep);
-  }
-
-  .trust-band::after {
-    position: absolute;
-    right: -8rem;
-    bottom: -14rem;
-    width: 30rem;
-    height: 30rem;
-    border: 1px solid rgba(247, 244, 235, 0.12);
-    border-radius: 50%;
-    content: "";
-  }
-
-  .trust-inner {
-    position: relative;
-    z-index: 1;
-    padding-block: clamp(4.5rem, 9vw, 7.5rem);
-  }
-
-  .trust-inner h2,
-  .trust-inner p,
   .closing-cta h2,
   .closing-cta p {
     color: var(--paper-bright);
-  }
-
-  .trust-inner h2 {
-    max-width: 18ch;
-  }
-
-  .trust-inner > p:not(.eyebrow) {
-    max-width: 45rem;
-    margin-top: var(--space-4);
-    color: var(--fog-200);
-    font-size: var(--step-1);
   }
 
   .text-link {
@@ -632,34 +579,29 @@
   }
 
   .story-art {
-    position: relative;
-    padding: var(--space-4);
-  }
-
-  .story-art::before,
-  .story-art::after {
-    position: absolute;
-    z-index: -1;
-    border-radius: 50%;
-    content: "";
-  }
-
-  .story-art::before {
-    inset: 4% 8%;
-    background: var(--fog-200);
-  }
-
-  .story-art::after {
-    top: -2rem;
-    right: -2rem;
-    width: 9rem;
-    height: 9rem;
-    border: 1px solid rgba(71, 126, 104, 0.25);
+    margin: 0;
   }
 
   .story-art img {
+    display: block;
     width: 100%;
+    aspect-ratio: 4 / 5;
     height: auto;
+    border-radius: var(--radius-lg);
+    box-shadow: var(--shadow-soft);
+    object-fit: cover;
+    object-position: center 38%;
+  }
+
+  .story-art figcaption {
+    margin-top: 0.75rem;
+    color: var(--ink-soft);
+    font-size: var(--step--2);
+    line-height: 1.5;
+  }
+
+  .story-art figcaption a {
+    color: inherit;
   }
 
   .story-copy p:not(.eyebrow) {
@@ -1091,12 +1033,7 @@
 
 @layer utilities {
   @media (max-width: 58rem) {
-    .hero {
-      min-height: auto;
-    }
-
     .hero-grid {
-      min-height: auto;
       grid-template-columns: 1fr;
       gap: 1.5rem;
       padding-top: 4.5rem;

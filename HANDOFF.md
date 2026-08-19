@@ -35,6 +35,8 @@ Im Websiteprojekt:
 - `public/assets/social-preview.png` – byte-identische Kopie des freigegebenen Lockups;
 - `public/assets/app-icon.png` und `public/assets/favicon.png` – vorhandene freigegebene App-Ableitungen.
 
+Zusätzlich verwendet die Startseite `public/assets/hermann-photo.jpg`, eine Aufnahme von PLT13 über Wikimedia Commons unter CC BY-SA 4.0. Die sichtbare Bildunterschrift verlinkt Quelle und Lizenz.
+
 Kein Asset wurde neu gezeichnet oder durch eine Ersatzillustration ersetzt. Das Original enthält C2PA-Provenienzmetadaten; die byte-identische Archivkopie bewahrt sie. Bereits vorhandene App-Crops enthalten diese Zusatzmetadaten nicht.
 
 ## App-Code-Audit als Grundlage der Datenschutzerklärung
