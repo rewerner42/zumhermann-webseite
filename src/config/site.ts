@@ -25,7 +25,7 @@ export const site = {
       'Cloudflare, Inc. als Auftragsverarbeiter; außerdem Cloudflare-Konzerngesellschaften sowie von Cloudflare eingesetzte Rechenzentrums-, Engineering- und Supportanbieter. Für die Cloudflare Developer Platform nennt die aktuelle Unterauftragnehmerliste insbesondere Google LLC und Oracle America, Inc.',
     processingLocationsAndTransfers:
       'Bereitstellung über Cloudflares globales Netzwerk. Dabei kann eine Verarbeitung im EWR, in den USA und in weiteren in der aktuellen Unterauftragnehmerliste genannten Ländern stattfinden. Für Übermittlungen in die USA nennt Cloudflare das EU-US Data Privacy Framework; soweit erforderlich gelten die EU-Standardvertragsklauseln einschließlich ergänzender Schutzmaßnahmen.',
-    privacyDetailsComplete: false,
+    privacyDetailsComplete: true,
   },
   privacy: {
     supervisoryAuthority:
@@ -36,7 +36,8 @@ export const site = {
     google: '',
   },
   legal: {
-    consumerDisputeInformation: '[[VSBG_ANGABE_NACH_PRÜFUNG]]',
+    consumerDisputeInformation:
+      'Der Betreiber ist weder bereit noch verpflichtet, an Streitbeilegungsverfahren vor einer Verbraucherschlichtungsstelle teilzunehmen.',
     textsApproved: true,
   },
   release: {

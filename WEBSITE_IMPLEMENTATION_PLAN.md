@@ -80,10 +80,10 @@ Vorgehen:
 - Sinnvoll getrennte Commits für Planung/Grundgerüst, Umsetzung/Assets, Qualität/Dokumentation.
 - GitHub-Repository `rewerner42/zumhermann-webseite` auf `main`; Veröffentlichung der Quelländerungen ausschließlich aus dem eigenständigen Website-Repository. Das Repository ist derzeit ohne Anmeldung öffentlich erreichbar; eine Sichtbarkeitsänderung ist nicht Bestandteil dieses Deployments.
 - Kein öffentliches Deployment ohne echte Domain, vollständige Hosting-Datenschutzangaben, bestandenen `npm run legal:check` und ausdrückliche Freigabe von Werner Francis Reineke-Ryskiewicz.
-- Cloudflare Workers Static Assets als Ziel: asset-only, Ausgabe `dist`, kein `main`-Entrypoint, keine Bindings, keine Secrets.
+- Genau ein Cloudflare Worker als Ziel: minimaler `www`-Redirect im `main`-Entrypoint, HTTPS-Erzwingung auf Zonenebene, Ausgabe `dist` über die `ASSETS`-Bindung, keine weiteren Bindings und keine Secrets.
 - Produktionsdomain `zumhermann.de` als Custom Domain; `workers.dev`, Preview URLs, Workers Observability und Logpush ausdrücklich deaktiviert.
 - `npm run deploy` erzwingt das vollständige Release-Gate und verwendet einen strikten Wrangler-Deploy.
-- Die noch bei Squarespace delegierte DNS-Zone muss erst verlustfrei zu Cloudflare migriert werden; `www` wird per Cloudflare Redirect Rule auf den Apex umgeleitet.
+- Die Cloudflare-Zone behält den bisherigen proxied `www`-Record als Rollbackziel; derselbe Worker leitet `www` kanonisch auf den Apex um.
 
 ## 8. Automatisierte Tests und Abnahmekriterien
 
@@ -94,22 +94,19 @@ Vorgehen:
 - `npm run worker:smoke`: lokale Worker-Auslieferung für Routing, 404, Sicherheits-/Cacheheader und fehlende Cookies prüfen.
 - `npm run worker:dry-run`: Worker-Bundle und Wrangler-Konfiguration ohne Upload paketieren.
 - `npm run test:content`: interne Links auf vorhandene Routen/Ziele sowie aussagekräftige `alt`-Attribute prüfen.
-- `npm run legal:check`: muss aktuell absichtlich fehlschlagen und vor Release alle `[[...]]`-Platzhalter, Pflichtkontaktangaben, Domain, Hostingabschnitt und Pflichtseiten prüfen.
+- `npm run legal:check`: prüft alle `[[...]]`-Platzhalter, Pflichtkontaktangaben, Domain, Hostingabschnitt und Pflichtseiten und ist für die Vorab-Bereitstellung grün.
 - Responsive visuelle Prüfung auf kleinem Smartphone, großem Smartphone/Tablet und Desktop.
 - Tastaturnavigation, sichtbare Fokuszustände, Kontraste, Überschriftenhierarchie, `lang="de"`, reduzierte Bewegung, robots.txt, Sitemap, Favicons, Open Graph und strukturierte Daten prüfen.
 - Keine externen Netzwerkressourcen, Cookies oder unnötige Browser-Speicherung im ausgelieferten HTML.
 
-## 9. Offene Pflichtangaben / Veröffentlichungssperre
+## 9. Offene Punkte vor App-/Indexierungsfreigabe
 
 - Betreiber und Kontakt sind bestätigt: Werner Francis Reineke-Ryskiewicz, Geseker Str. 26,
   33154 Salzkotten, `tach@zumhermann.de`, 05258 987282.
-- Cloudflare-Anbieter-, Lösch-, Empfänger-, Transfer- und LDI-NRW-Angaben sind vorbereitet; offen
-  bleiben persönliche Kundenidentität, Self-Serve-Vertrag und Dashboardbestätigung vor
-  `privacyDetailsComplete = true`.
+- Cloudflare-Anbieter-, Lösch-, Empfänger-, Transfer- und LDI-NRW-Angaben sind bestätigt;
+  `privacyDetailsComplete = true`, Live-Antworten setzen keine Cookies.
 - Apple- und Google-Store-URLs bleiben bis zur tatsächlichen Verfügbarkeit bewusst leer.
-- Prüfung der konkreten Anwendbarkeit der Verbraucherstreitbeilegungsinformation nach § 36 VSBG (insbesondere Beschäftigtenzahl und Bereitschaft/Verpflichtung)
 - Prüfung, ob eine Umsatzsteuer-Identifikationsnummer oder Wirtschafts-Identifikationsnummer besteht und nach § 5 DDG tatsächlich zu veröffentlichen ist; niemals eine persönliche Steuernummer
-- Individuelle rechtliche Freigabe der Entwürfe
 - Abgeschlossener Produktionsbinary-/Netzwerkaudit der App und dokumentierte Bestätigung über `appProductionAuditComplete`
 - Ausdrückliche öffentliche Veröffentlichungsfreigabe
 
@@ -127,13 +124,14 @@ Vorgehen:
 | Technische und visuelle Abnahme | abgeschlossen |
 | Git-Historie und GitHub-Repository | abgeschlossen; SSH-Remote `rewerner42/zumhermann-webseite`, Branch `main`; derzeit öffentlich erreichbar |
 | Cloudflare-Worker-Konfiguration und technische Gates | umgesetzt; unabhängiger Quell- und Buildaudit abgeschlossen, technisch GO |
-| Cloudflare-Zone und DNS-Migration | blockiert; Nameserver und Webrecords liegen noch bei Squarespace |
-| Öffentliches Deployment | blockiert bis Pflichtangaben und Freigabe vorliegen |
+| Cloudflare-Zone und DNS-Migration | abgeschlossen; Proton-DNS autoritativ korrekt, HTTPS aktiv, Squarespace-Apex ersetzt |
+| Nicht indexiertes Vorab-Deployment | live; Worker-Version `ac6f004e-0f58-4348-bce1-b97e4a9ee651` |
+| App-/Indexierungsfreigabe | blockiert bis Store-Links und finaler App-Audit vorliegen |
 
 ## 11. Erweiterungsplan Cloudflare Workers
 
 1. Ist-Zustand, Workername, Cloudflare-Anmeldung, vorhandene Deployments und öffentliches DNS prüfen.
-2. Minimalen asset-only Worker mit Custom 404 und slashlosem HTML-Routing konfigurieren.
+2. Einen einzelnen minimalen Worker mit `www`-Redirect, HTTPS-Erzwingung auf Zonenebene, Static Assets, Custom 404 und slashlosem HTML-Routing konfigurieren.
 3. Öffentliche Worker- und Preview-URLs sowie Workers Observability und Logpush deaktivieren.
 4. Produktionsbefehl so kapseln, dass `legal:check` vor jedem Upload zwingend ausgeführt wird.
 5. Sicherheitsheader auf Workers-Verhalten abstimmen und negative Langzeitcaches für fehlende stabile Assets vermeiden.

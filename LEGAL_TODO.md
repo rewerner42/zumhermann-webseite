@@ -1,9 +1,9 @@
 # Offene Rechts- und Pflichtangaben
 
 Stand: 19. August 2026
-Status: **Veröffentlichung gesperrt**
+Status: **Vorab-Bereitstellung freigegeben; App-/Indexierungsfreigabe bleibt offen**
 
-Die Website ist technisch und redaktionell als Entwurf vorbereitet. Dieses Dokument ist keine individuelle Rechtsberatung. Tatsachen, Vertragssituation und endgültige Texte müssen vor dem öffentlichen Betrieb geprüft werden.
+Die nicht indexierte Vorabversion ist technisch und redaktionell freigegeben und live. Dieses Dokument ist keine individuelle Rechtsberatung. Tatsachen, Vertragssituation und Texte müssen bei Änderungen erneut geprüft werden.
 
 ## 1. Betreiber- und Kontaktangaben
 
@@ -16,9 +16,8 @@ In `src/config/site.ts` bestätigt und eingetragen:
 
 Noch zu erledigen:
 
-- Proton-Mail-DNS reparieren beziehungsweise verifizieren: Der autoritative DNS-Audit fand trotz
-  Proton-Verifizierungs-TXT keinen MX-Eintrag und `v=spf1 -all`; danach E-Mail aus einem unabhängigen
-  externen Postfach erneut testen;
+- Proton-Empfang und -Versand aus einem unabhängigen externen Postfach praktisch testen; MX, SPF,
+  drei DKIM-CNAMEs und DMARC sind autoritativ korrekt und das Proton-Verifizierungs-TXT blieb erhalten;
 - prüfen, ob eine Umsatzsteuer-Identifikationsnummer oder Wirtschafts-Identifikationsnummer besteht und nach der konkreten Anwendbarkeit von § 5 DDG veröffentlicht werden muss;
 - keine persönliche Steuernummer anfordern oder veröffentlichen;
 - keine Rechtsform, Registerdaten, Aufsichts- oder Berufsangaben ergänzen, solange sie nicht tatsächlich einschlägig sind;
@@ -34,7 +33,7 @@ Amtliche Grundlagen:
 
 ## 2. Domain, Hosting und Website-Datenschutz
 
-In `src/config/site.ts` sind anhand der aktuellen offiziellen Cloudflare-Unterlagen vorbereitet:
+In `src/config/site.ts` sind anhand der aktuellen offiziellen Cloudflare-Unterlagen bestätigt:
 
 - Cloudflare, Inc. und Cloudflare Workers Static Assets als Anbieter;
 - Löschkriterien nach dem Cloudflare-DPA bei deaktivierten eigenen Workers Logs;
@@ -42,9 +41,9 @@ In `src/config/site.ts` sind anhand der aktuellen offiziellen Cloudflare-Unterla
 - LDI NRW als zuständige Datenschutzaufsichtsbehörde.
 
 Die Produktionsdomain ist als `https://zumhermann.de` bestätigt und bereits zu Cloudflare delegiert.
-Offen bleibt die Kundenidentität: Wrangler ist derzeit bei einem Cloudflare-Account mit der
-Bezeichnung Reineke Technik GmbH angemeldet. Vor dem persönlichen Release muss der Account auf Werner
-persönlich umgestellt oder ein persönlicher Account gewählt und dessen Account-ID fest gepinnt werden.
+Werner hat die Nutzung des vorhandenen Cloudflare-Accounts für dieses persönliche Projekt ausdrücklich
+freigegeben. Die nicht geheime Account-ID `0db45adad30041a8fb85829450807027` ist in der
+Worker-Konfiguration fest gepinnt; daraus folgt keine Beteiligung der GmbH am Projekt.
 
 Nach Auswahl des tatsächlichen Hosters anhand des gebuchten Tarifs und der realen Konfiguration prüfen:
 
@@ -57,7 +56,7 @@ Nach Auswahl des tatsächlichen Hosters anhand des gebuchten Tarifs und der real
 - ob Sicherheitsheader aus `public/_headers` vollständig übernommen werden;
 - zuständige Landesdatenschutzaufsichtsbehörde anhand der echten Betreiberanschrift benennen.
 
-Für die geplante Cloudflare-Konfiguration zusätzlich dokumentieren:
+Für die laufende Cloudflare-Konfiguration dokumentiert beziehungsweise bei Änderungen erneut zu prüfen:
 
 - Self-Serve-Vertrag und einbezogenen Cloudflare-DPA/AVV samt tatsächlich verantwortlicher
   Vertragspartei;
@@ -71,8 +70,10 @@ Für die geplante Cloudflare-Konfiguration zusätzlich dokumentieren:
 - aktuelle Cloudflare-Unterauftragnehmer und Transfergarantien. Ohne belegte Enterprise-
   Lokalisierungsprodukte nicht behaupten, die Verarbeitung finde ausschließlich in der EU statt.
 
-Erst nach Klärung der persönlichen Kundenidentität, des Self-Serve-Vertrags und des Dashboardzustands
-`hosting.privacyDetailsComplete` auf `true` setzen.
+Die freigegebenen Angaben sind mit `hosting.privacyDetailsComplete = true` bestätigt. Der Live-Audit
+fand keine Cookies oder externen Laufzeitressourcen; CSP, Sicherheitsheader, deaktivierte Worker-
+Observability/Logpush und die HTTPS-Erzwingung sind aktiv. Cloudflare ergänzt `robots.txt` um seine
+verwalteten Content-Signals/AI-Crawler-Regeln und setzt technische NEL-/Report-To-Header.
 
 Amtliche Grundlagen:
 
@@ -91,11 +92,11 @@ Amtliche Grundlagen:
 
 ## 3. Verbraucherstreitbeilegung
 
-Offener Platzhalter:
+Werner hat folgende Angabe bestätigt:
 
-- `[[VSBG_ANGABE_NACH_PRÜFUNG]]`
+> Der Betreiber ist weder bereit noch verpflichtet, an Streitbeilegungsverfahren vor einer Verbraucherschlichtungsstelle teilzunehmen.
 
-Vor Veröffentlichung feststellen und dokumentieren:
+Bei veränderten Verhältnissen erneut feststellen und dokumentieren:
 
 1. Handelt der persönliche Betreiber bei Angebot und Vertrieb der App als Unternehmer im Sinne des § 14 BGB?
 2. Wie viele Personen waren am 31. Dezember des Vorjahres beschäftigt? Für eine Veröffentlichung im Jahr 2026 ist grundsätzlich der 31. Dezember 2025 maßgeblich.
@@ -164,6 +165,6 @@ Erst für den öffentlichen App-Launch zusätzlich erforderlich:
 
 ## 7. Aktueller Gate-Status
 
-`npm run legal:check` muss mit dem derzeitigen Stand fehlschlagen. Ein grüner lokaler Build, ein
-GitHub-Repository, ein erfolgreicher Wrangler-Dry-Run oder `noindex` hebt diese
-Veröffentlichungssperre nicht auf.
+`npm run legal:check` und das vollständige lokale Release-Gate sind für die nicht indexierte
+Vorab-Bereitstellung grün. App-Produktionsaudit, Store-Links und öffentliche Indexierungsfreigabe
+bleiben bewusst getrennt offen.
